@@ -26,6 +26,18 @@ Para acompanhar a evolução das funcionalidades, utilizamos o Trello como nossa
 📋 Quadro de Funcionalidades (Roadmap)
 No quadro abaixo, você encontrará os cards detalhando desde a concepção da lógica de cálculo de CO2 até a interface do dashboard sustentável.
 
+<table>
+  <tr>
+    <td align="center" valign="top" width="50%">
+      <img src="" alt="Backlog no Trello – visão 1 do quadro" width="440" />
+    </td>
+    <td align="center" valign="top" width="50%">
+      <img src="" alt="Backlog no Trello – visão 2 do quadro" width="440" />
+    </td>
+  </tr>
+</table>
+
+
 Link do Projeto: [Acesse o Trello aqui](https://trello.com/invite/b/69c1b27fd13fc42b7d5be7b3/ATTIc3a5d6e0ed9b56954ba6333d93ac472450B48124/kanban-projetos-2)
 
 Principais Cards: AF02 - AF06 - AF07 - AF08
