@@ -1,6 +1,4 @@
-# projetos-2-gp6
-
-## *🌿 Taggy Sustain: Mensurando Impacto Ambiental*
+# *🌿 Taggy Sustain: Mensurando Impacto Ambiental*
 Uma iniciativa em parceria com a Edenred Brasil e Taggy para transformar conveniência em consciência ecológica.
 
 ## 📌 Sobre a Taggy
