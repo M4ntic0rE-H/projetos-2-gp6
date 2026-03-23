@@ -32,7 +32,7 @@ No quadro abaixo, você encontrará os cards detalhando desde a concepção da l
       <img src="Imgs/Captura de tela 2026-03-23 195532.png" alt="Backlog no Trello – visão 1 do quadro" width="440" />
     </td>
     <td align="center" valign="top" width="50%">
-      <img src="" alt="Backlog no Trello – visão 2 do quadro" width="440" />
+      <img src="Imgs/Captura de tela 2026-03-23 195555.png" alt="Backlog no Trello – visão 2 do quadro" width="440" />
     </td>
   </tr>
 </table>
