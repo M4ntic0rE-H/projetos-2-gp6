@@ -40,7 +40,11 @@ No quadro abaixo, você encontrará os cards detalhando desde a concepção da l
 
 Link do Projeto: [Acesse o Trello aqui](https://trello.com/invite/b/69c1b27fd13fc42b7d5be7b3/ATTIc3a5d6e0ed9b56954ba6333d93ac472450B48124/kanban-projetos-2)
 
-Principais Cards: AF02 - AF06 - AF07 - AF08
+Principais Cards: 
+- AF02
+- AF06
+- AF07
+- AF08
 
 ## 👥 Autores
 
