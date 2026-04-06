@@ -47,7 +47,7 @@ Principais Cards:
 ## 🎨 Design de Experiência e Fluxos do Sistema
 Nesta seção, detalhamos a fundação visual e lógica do projeto, abrangendo desde a concepção inicial das ideias até o mapeamento detalhado das interações do usuário.
 
-# 🖌️ Prototipagem de Baixa Fidelidade (Lo-Fi)
+### 🖌️ Prototipagem de Baixa Fidelidade (Lo-Fi)
 Utilizamos o Figma para a criação de esboços iniciais, focando na arquitetura da informação e na jornada do usuário sem a distração de elementos visuais complexos.
 
 Sketches & Storyboards: Elaboramos um conjunto de 10 storyboards que ilustram o contexto de uso e a resolução de problemas para nossas principais User Stories.
@@ -69,6 +69,9 @@ Os arquivos também encontram-se anexados aos respectivos cards de tarefa no Tre
 
 ## ⚙️ Diagramas de Atividades
 Para garantir que a lógica do sistema esteja alinhada às necessidades do negócio, cada História de Usuário (User Story) possui um diagrama de atividades correspondente. Estes diagramas mapeiam o fluxo lógico, decisões do sistema e caminhos alternativos.
+
+### 📌 Nota de Acesso 
+Para manter este README conciso e evitar excesso de informações visuais, os links abaixo direcionam diretamente para os anexos nos respectivos cards do Trello, onde a documentação técnica está centralizada.
 
 Índice de Diagramas por User Story:
 | História de Usuário              | Diagramas|
