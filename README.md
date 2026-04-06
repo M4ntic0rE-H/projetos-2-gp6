@@ -1,7 +1,7 @@
 # *🌿 Taggy Sustain: Mensurando Impacto Ambiental*
 Uma iniciativa em parceria com a Edenred Brasil e Taggy para transformar conveniência em consciência ecológica.
 
-## 📌 Sobre a Taggy
+## 🌳 Sobre a Taggy
 A Taggy é uma solução white-label de pagamento automático de pedágios e estacionamentos via tecnologia RFID. Atuando em parceria com bancos e fintechs, o serviço permite que o débito seja feito diretamente na conta ou cartão do cliente, eliminando paradas desnecessárias e recargas manuais.
 
 ## ⚠️ O Problema
