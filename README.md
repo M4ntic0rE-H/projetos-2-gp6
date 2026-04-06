@@ -107,7 +107,7 @@ Abaixo, detalhamos o cronograma planejado para as Sprints do projeto:
 <table>
   <tr>
     <td align="center" valign="top" width="50%">
-      <img src="Imgs/Dashboard Prototype.png" alt="Backlog no Trello – visão 1 do quadro" width="440" />
+      <img src="Imgs/Trello Backlog Sprint 1.png" alt="Backlog no Trello – visão 1 do quadro" width="440" />
     </td>
   </tr>
 </table>
