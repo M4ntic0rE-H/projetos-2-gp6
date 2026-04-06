@@ -47,11 +47,14 @@ Principais Cards:
 ## 🎨 Design de Experiência e Fluxos do Sistema
 Nesta seção, detalhamos a fundação visual e lógica do projeto, abrangendo desde a concepção inicial das ideias até o mapeamento detalhado das interações do usuário.
 
-## 🎬 Demonstração de Uso (MP4)
+## 🎬 Demonstração de Uso 
 Abaixo, você pode conferir o funcionamento da interface em tempo real. O vídeo demonstra o fluxo completo desde o login até a finalização da tarefa principal.
 <div align="center">
 <a href="Showcase/WhatsApp Video 2026-04-06 at 20.07.01.mp4">Clique aqui para baixar o arquivo.</a>
 </div>
+
+#### 📺Narração de Uso
+
 
 
 
