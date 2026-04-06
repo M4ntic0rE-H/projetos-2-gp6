@@ -54,10 +54,10 @@ Sketches & Storyboards: Elaboramos um conjunto de 10 storyboards que ilustram o 
 <table>
   <tr>
     <td align="center" valign="top" width="50%">
-      <img src="Imgs/PDF Export Prototype.png" alt="Backlog no Trello – visão 1 do quadro" width="440" />
+      <img src="Imgs/Dashboard Prototype.png" alt="Backlog no Trello – visão 1 do quadro" width="440" />
     </td>
     <td align="center" valign="top" width="50%">
-      <img src="Imgs/Trello Backlog 2.png" alt="Backlog no Trello – visão 2 do quadro" width="440" />
+      <img src="Imgs/PDF Export Prototype.png" alt="Backlog no Trello – visão 2 do quadro" width="440" />
     </td>
   </tr>
 </table>
