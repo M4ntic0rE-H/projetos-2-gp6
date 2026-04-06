@@ -50,11 +50,9 @@ Nesta seção, detalhamos a fundação visual e lógica do projeto, abrangendo d
 ## 🎬 Demonstração de Uso (MP4)
 Abaixo, você pode conferir o funcionamento da interface em tempo real. O vídeo demonstra o fluxo completo desde o login até a finalização da tarefa principal.
 <div align="center">
-<video src="Showcase/WhatsApp Video 2026-04-06 at 20.07.01.mp4" width="100%" controls title="Demonstração do Sistema">
-Seu navegador não suporta a reprodução de vídeos.
 <a href="Showcase/WhatsApp Video 2026-04-06 at 20.07.01.mp4">Clique aqui para baixar o arquivo.</a>
-</video>
 </div>
+
 
 
 ### 🖌️ Prototipagem de Baixa Fidelidade (Lo-Fi)
