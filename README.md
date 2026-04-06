@@ -54,12 +54,11 @@ Abaixo, você pode conferir o funcionamento da interface em tempo real. O vídeo
 </div>
 
 #### 📺Narração de Uso
-
-Olá! Bem-vindos à apresentação do nosso novo dashboard da Taggy.
-Logo no centro, o grande destaque é o nosso Score Verde.
-Ao lado, temos nossos indicadores principais, Acompanhamos também os nossos custos logísticos, registrando 2 passagens por pedágios e 4 abastecimentos no mês, que totalizaram um gasto de 312 reais.
-Para garantir total transparência, a tabela inferior mostra o Histórico de abastecimentos. Aqui detalhamos as datas, os postos utilizados.
-Por fim, temos o painel lateral com fácil acesso a relatórios e a opção rápida de exportar tudo para PDF no botão superior esquerdo.
+ - Olá! Bem-vindos à apresentação do nosso novo dashboard da Taggy, Hoje vamos explorar a tela de Resumo de Emissões.
+ - Logo no centro, o grande destaque é o nosso Score Verde.
+ - Ao lado, temos nossos indicadores principais, Acompanhamos também os nossos custos logísticos, registrando 2 passagens por pedágios e 4 abastecimentos no mês, que totalizaram um gasto de 312 reais.
+ - Para garantir total transparência, a tabela inferior mostra o Histórico de abastecimentos. Aqui detalhamos as datas, os postos utilizados.
+ - Por fim, temos o painel lateral com fácil acesso a relatórios e a opção rápida de exportar tudo para PDF no botão superior esquerdo.
 
 
 
