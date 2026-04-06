@@ -102,6 +102,16 @@ Para manter este README conciso e evitar excesso de informações visuais, os li
 | _API de Saída de Dados Abertos (Integração ERP)_   | [Diagrama 9](https://trello.com/c/fBwYqcNM#action-69d430bb4df5072bd356463e) |
 | _Alertas de Ineficiência de Rota_   | [Diagrama 10](https://trello.com/c/FbLfAuYw#action-69d4313ce72e9841613c1a4e) |
 
+## ⏳ Ciclos de Entrega
+Abaixo, detalhamos o cronograma planejado para as Sprints do projeto:
+<table>
+  <tr>
+    <td align="center" valign="top" width="50%">
+      <img src="Imgs/Dashboard Prototype.png" alt="Backlog no Trello – visão 1 do quadro" width="440" />
+    </td>
+  </tr>
+</table>
+
 ## 📋 Integração com Trello
 Para manter a rastreabilidade do projeto:
 
