@@ -44,6 +44,53 @@ Principais Cards:
 - AF07
 - AF08
 
+## 🎨 Design de Experiência e Fluxos do Sistema
+Nesta seção, detalhamos a fundação visual e lógica do projeto, abrangendo desde a concepção inicial das ideias até o mapeamento detalhado das interações do usuário.
+
+# 🖌️ Prototipagem de Baixa Fidelidade (Lo-Fi)
+Utilizamos o Figma para a criação de esboços iniciais, focando na arquitetura da informação e na jornada do usuário sem a distração de elementos visuais complexos.
+
+Sketches & Storyboards: Elaboramos um conjunto de 10 storyboards que ilustram o contexto de uso e a resolução de problemas para nossas principais User Stories.
+<table>
+  <tr>
+    <td align="center" valign="top" width="50%">
+      <img src="Imgs/Trello Backlog 1.png" alt="Backlog no Trello – visão 1 do quadro" width="440" />
+    </td>
+    <td align="center" valign="top" width="50%">
+      <img src="Imgs/Trello Backlog 2.png" alt="Backlog no Trello – visão 2 do quadro" width="440" />
+    </td>
+  </tr>
+</table>
+
+Acesso: [Acesse o Protótipo Aqui](https://www.figma.com/design/ScnWCZGtlDMBqQJet72IQf/Prot%C3%B3tipo?node-id=0-1&t=cmAqJUl7k85OB9sx-1)
+
+
+Os arquivos também encontram-se anexados aos respectivos cards de tarefa no Trello.
+
+## ⚙️ Diagramas de Atividades
+Para garantir que a lógica do sistema esteja alinhada às necessidades do negócio, cada História de Usuário (User Story) possui um diagrama de atividades correspondente. Estes diagramas mapeiam o fluxo lógico, decisões do sistema e caminhos alternativos.
+
+Índice de Diagramas por User Story:
+| História de Usuário              | Diagramas|
+| :---------------- | :---------------------- |
+| _Widget Conversor de Árvores_   | [Diagrama 1](https://trello.com/c/Vq1JOpGb#action-69d4285fbffa5ba2d2209360)  |
+| _Extrato Duplo (Financeiro + Ambiental)_   | [Diagrama 2](https://trello.com/c/rM8TufBM#action-69d42a815055a2c28971c30c) |
+| _Push Notification de Impacto Imediato_ | [Diagrama 3](https://trello.com/c/Y2zU7bYj#action-69d42e979f2c40371ff3e6cf)           |
+| _Gamificação de Metas Verdes_    | [Diagrama 4](https://trello.com/c/wCIshG6F#action-69d4304fa28015eb1248bf18)  |
+| _Benefícios Atrelados à Redução (Cashback Verde)_   | [Diagrama 5](https://trello.com/c/nCxzdZsl#action-69d430ff2ddac1141856e2aa) | 
+| _Tabela de Emissões por Categoria (Motor de Cálculo)_   | [Diagrama 6](https://trello.com/c/BNqL1xU2#action-69d42ce97c576297efbddb91)  |
+| _Dashboard de Economia de Combustível_   | [Diagrama 7](https://trello.com/c/qNFJDah2#action-69d42da5ce967ce2687d645d) |
+| _Relatório "One-Click" de Sustentabilidade (ESG)_   | [Diagrama 8](https://trello.com/c/vYWn09Ew#action-69d42e0698262dce94dd6aa3) |
+| _API de Saída de Dados Abertos (Integração ERP)_   | [Diagrama 9](https://trello.com/c/fBwYqcNM#action-69d430bb4df5072bd356463e) |
+| _Alertas de Ineficiência de Rota_   | [Diagrama 10](https://trello.com/c/FbLfAuYw#action-69d4313ce72e9841613c1a4e) |
+
+## 📋 Integração com Trello
+Para manter a rastreabilidade do projeto:
+
+ 1. Cada card de funcionalidade no Trello contém o anexo direto do seu respectivo Sketch ou Diagrama.
+
+ 2. Mudanças nos requisitos refletem atualizações imediatas nos diagramas listados acima.
+
 ## 👥 Autores
 
 | Nome              | Papel                   | E-mail             |
