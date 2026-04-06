@@ -47,6 +47,12 @@ Principais Cards:
 ## 🎨 Design de Experiência e Fluxos do Sistema
 Nesta seção, detalhamos a fundação visual e lógica do projeto, abrangendo desde a concepção inicial das ideias até o mapeamento detalhado das interações do usuário.
 
+## 🎬 Demonstração de Uso (MP4)
+Abaixo, você pode conferir o funcionamento da interface em tempo real. O vídeo demonstra o fluxo completo desde o login até a finalização da tarefa principal.
+<div align="center">
+<video src="docs/assets/video-demonstracao.mp4" width="100%" controls title="Demonstração do Sistema">
+
+
 ### 🖌️ Prototipagem de Baixa Fidelidade (Lo-Fi)
 Utilizamos o Figma para a criação de esboços iniciais, focando na arquitetura da informação e na jornada do usuário sem a distração de elementos visuais complexos.
 
