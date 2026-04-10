@@ -1,10 +1,10 @@
-# *🌿 Taggy Sustain: Mensurando Impacto Ambiental*
+# * Taggy Sustain: Mensurando Impacto Ambiental*
 Uma iniciativa em parceria com a Edenred Brasil e Taggy para transformar conveniência em consciência ecológica.
 
-## 🌳 Sobre a Taggy
+##  Sobre a Taggy
 A Taggy é uma solução white-label de pagamento automático de pedágios e estacionamentos via tecnologia RFID. Atuando em parceria com bancos e fintechs, o serviço permite que o débito seja feito diretamente na conta ou cartão do cliente, eliminando paradas desnecessárias e recargas manuais.
 
-## ⚠️ O Problema
+##  O Problema
  1. Embora a tecnologia RFID da Taggy seja inerentemente sustentável, existe uma lacuna de percepção:
 
  2. Frenagens e Retomadas: O ato de parar e arrancar em cabines de pedágio aumenta significativamente a emissão de CO2.
@@ -13,15 +13,15 @@ A Taggy é uma solução white-label de pagamento automático de pedágios e est
 
  4. Falta de Dados: Atualmente, os usuários não conseguem visualizar ou mensurar o quanto estão ajudando o planeta ao utilizar o serviço.
 
-## 🚀 Nossa Missão
+##  Nossa Missão
 Nossa missão é tangibilizar a sustentabilidade. Queremos permitir que os usuários do sistema compreendam o impacto ambiental evitado de maneira clara e objetiva.
 
 Através de métricas precisas (como redução de emissão de carbono e economia de papel), pretendemos manter o interesse do usuário focado em práticas sustentáveis, transformando cada passagem pelo pedágio em um ponto positivo para o meio ambiente.
 
-## 🛠️ Desenvolvimento e Planejamento
+##  Desenvolvimento e Planejamento
 Para acompanhar a evolução das funcionalidades, utilizamos o Trello como nossa ferramenta de gestão ágil.
 
-## 📋 Quadro de Funcionalidades (Roadmap)
+##  Quadro de Funcionalidades (Roadmap)
 No quadro abaixo, você encontrará os cards detalhando desde a concepção da lógica de cálculo de CO2 até a interface do dashboard sustentável.
 
 <table>
@@ -44,10 +44,10 @@ Principais Cards:
 - AF07
 - AF08
 
-## 🎨 Design de Experiência e Fluxos do Sistema
+##  Design de Experiência e Fluxos do Sistema
 Nesta seção, detalhamos a fundação visual e lógica do projeto, abrangendo desde a concepção inicial das ideias até o mapeamento detalhado das interações do usuário.
 
-## 🎬 Demonstração de Uso 
+##  Demonstração de Uso 
 Abaixo, você pode conferir o funcionamento da interface em tempo real. O vídeo demonstra o fluxo completo desde o login até a finalização da tarefa principal.
 <div align="center">
 <a href="Showcase/WhatsApp Video 2026-04-06 at 20.07.01.mp4">Clique aqui para baixar o arquivo.</a>
@@ -62,7 +62,7 @@ Abaixo, você pode conferir o funcionamento da interface em tempo real. O vídeo
 
 
 
-### 🖌️ Prototipagem de Baixa Fidelidade (Lo-Fi)
+###  Prototipagem de Baixa Fidelidade (Lo-Fi)
 Utilizamos o Figma para a criação de esboços iniciais, focando na arquitetura da informação e na jornada do usuário sem a distração de elementos visuais complexos.
 
 Sketches & Storyboards: Elaboramos um conjunto de 10 storyboards que ilustram o contexto de uso e a resolução de problemas para nossas principais User Stories.
@@ -82,10 +82,10 @@ Acesso: [Acesse o Protótipo Aqui](https://www.figma.com/design/ScnWCZGtlDMBqQJe
 
 Os arquivos também encontram-se anexados aos respectivos cards de tarefa no Trello.
 
-## ⚙️ Diagramas de Atividades
+##  Diagramas de Atividades
 Para garantir que a lógica do sistema esteja alinhada às necessidades do negócio, cada História de Usuário (User Story) possui um diagrama de atividades correspondente. Estes diagramas mapeiam o fluxo lógico, decisões do sistema e caminhos alternativos.
 
-### 📌 Nota de Acesso 
+###  Nota de Acesso 
 Para manter este README conciso e evitar excesso de informações visuais, os links abaixo direcionam diretamente para os anexos nos respectivos cards do Trello, onde a documentação técnica está centralizada.
 
 Índice de Diagramas por User Story:
@@ -102,7 +102,7 @@ Para manter este README conciso e evitar excesso de informações visuais, os li
 | _API de Saída de Dados Abertos (Integração ERP)_   | [Diagrama 9](https://trello.com/c/fBwYqcNM#action-69d430bb4df5072bd356463e) |
 | _Alertas de Ineficiência de Rota_   | [Diagrama 10](https://trello.com/c/FbLfAuYw#action-69d4313ce72e9841613c1a4e) |
 
-## ⏳ Ciclos de Entrega
+##  Ciclos de Entrega
 Abaixo, detalhamos o cronograma planejado para as Sprints do projeto:
 <table>
   <tr>
@@ -112,14 +112,14 @@ Abaixo, detalhamos o cronograma planejado para as Sprints do projeto:
   </tr>
 </table>
 
-## 📋 Integração com Trello
+##  Integração com Trello
 Para manter a rastreabilidade do projeto:
 
  1. Cada card de funcionalidade no Trello contém o anexo direto do seu respectivo Sketch ou Diagrama.
 
  2. Mudanças nos requisitos refletem atualizações imediatas nos diagramas listados acima.
 
-## 👥 Autores
+##  Autores
 
 | Nome              | Papel                   | E-mail             |
 | :---------------- | :---------------------- | :----------------- |
