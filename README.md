@@ -123,12 +123,12 @@ Para manter a rastreabilidade do projeto:
 
 | Nome              | Papel                   | E-mail             |
 | :---------------- | :---------------------- | :----------------- |
-| _Breno Gabriel_   | Desenvolvedor Front-End  | bgas@cesar.school  |
-| _Pedro Lima_   | Desenvolvedor FullStack | phpl@cesar.school |
-| _Tarcisio Wanderley_ | Product Owner           | tlwsf@cesar.school  |
-| _Gilberto Dias_    | Desenvolvedor Back-End  | gdsn@gmail.com |
-| _André Montenegro_   | Desenvolvedor FullStack | agmos@cesar.school |
-| _Vitor Emmanuel_   | Desenvolvedor Front-End  | velfg@cesar.school  |
+| _Breno Gabriel_   | Desenvolvedor Front-End & Assistant Organizer | bgas@cesar.school  |
+| _Pedro Lima_   | Desenvolvedor Back-End | phpl@cesar.school |
+| _Tarcisio Wanderley_ | Product Owner & Desenvolvedor FullStack | tlwsf@cesar.school  |
+| _Gilberto Dias_    | Desenvolvedor Back-End | gdsn@gmail.com |
+| _André Montenegro_   | Tech-Lead & Desenvolvedor FullStack | agmos@cesar.school |
+| _Vitor Emmanuel_   | Desenvolvedor Front-End | velfg@cesar.school  |
 
 ---
 
