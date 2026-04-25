@@ -5,27 +5,47 @@ export default function Home() {
   const [tipoVeiculo, setTipoVeiculo] = useState("leve");
   const [tipoCombustivel, setTipoCombustivel] = useState("gasolina");
   const [totalPassagens, setTotalPassagens] = useState(1);
+  
+  const [resultadoKg, setResultadoKg] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  // Valores de emissões evitadas (em gramas) por passagem baseados no seu racional
-  const calcularEmissoesEvitadas = () => {
-    let evitadoPorPassagem = 0;
+  const handleCalcular = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setResultadoKg(null);
 
-    if (tipoVeiculo === "leve" && tipoCombustivel === "gasolina") {
-      evitadoPorPassagem = 94.46;
-    } else if (tipoVeiculo === "leve" && tipoCombustivel === "etanol") {
-      evitadoPorPassagem = 63.23;
-    } else if (tipoVeiculo === "pesado" && tipoCombustivel === "diesel") {
-      evitadoPorPassagem = 306.48;
-    } else {
-      // Valor padrão genérico caso escolha uma combinação não mapeada
-      evitadoPorPassagem = 94.46;
+    try {
+      // Importante: Substitua esta URL pela URL real onde seu backend Python (FastAPI/Flask) está rodando.
+      // Geralmente é algo como http://localhost:8000/calcular ou similar.
+      const response = await fetch("http://localhost:8000/calcular", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          tipoVeiculo,
+          tipoCombustivel,
+          totalPassagens
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro na resposta do servidor.");
+      }
+
+      const data = await response.json();
+      
+      // Aqui estou assumindo que seu backend vai retornar um JSON com a chave "resultadoKg"
+      // Exemplo: { "resultadoKg": "24.94" }
+      setResultadoKg(data.resultadoKg);
+    } catch (err) {
+      setError("Falha ao conectar com o backend. Verifique se a API está rodando.");
+    } finally {
+      setLoading(false);
     }
-
-    // Retorna o valor total em Kg (dividindo por 1000)
-    return ((evitadoPorPassagem * totalPassagens) / 1000).toFixed(2);
   };
-
-  const resultadoKg = calcularEmissoesEvitadas();
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
@@ -34,7 +54,7 @@ export default function Home() {
           Calculadora Taggy
         </h1>
 
-        <div className="space-y-4">
+        <form onSubmit={handleCalcular} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Tipo de Veículo
@@ -76,12 +96,28 @@ export default function Home() {
               className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 text-black"
             />
           </div>
-        </div>
 
-        <div className="mt-8 p-4 bg-green-50 border border-green-200 rounded text-center">
-          <p className="text-sm text-green-800 mb-1">Emissões de CO₂ evitadas:</p>
-          <p className="text-3xl font-bold text-green-600">{resultadoKg} kg</p>
-        </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full mt-4 bg-green-600 text-white font-bold py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-70 transition-colors"
+          >
+            {loading ? "Calculando no servidor..." : "Calcular Impacto"}
+          </button>
+        </form>
+
+        {error && (
+          <div className="mt-6 p-3 bg-red-50 text-red-700 border border-red-200 rounded text-sm text-center">
+            {error}
+          </div>
+        )}
+
+        {resultadoKg !== null && !error && (
+          <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded text-center">
+            <p className="text-sm text-green-800 mb-1">Emissões de CO₂ evitadas:</p>
+            <p className="text-3xl font-bold text-green-600">{resultadoKg} kg</p>
+          </div>
+        )}
       </div>
     </div>
   );
