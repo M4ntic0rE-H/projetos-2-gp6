@@ -49,7 +49,6 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-zinc-50 flex flex-col items-center justify-center p-6 text-zinc-900 font-sans selection:bg-emerald-200 selection:text-emerald-900">
       <div className="w-full max-w-[400px]">
-        {/* Header minimalista */}
         <div className="mb-10 text-center">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-emerald-100 mb-4">
             <Calculator className="w-6 h-6 text-emerald-600" />
@@ -62,7 +61,6 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Formulário limpo */}
         <form onSubmit={handleCalcular} className="space-y-5">
           <div className="space-y-1.5">
             <label className="text-sm font-medium text-zinc-600">
@@ -121,7 +119,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Resultado Minimalista mas completo */}
         {resultado !== null && !error && (
           <div className="mt-8 text-center animate-in fade-in slide-in-from-bottom-2 duration-500">
             <div className="inline-block p-6 w-full bg-white border border-zinc-100 shadow-sm rounded-2xl">
@@ -130,7 +127,6 @@ export default function Home() {
               </p>
 
               <div className="flex items-baseline justify-center gap-1.5 mb-5">
-                {/* Convertendo de gramas para Kilos na exibição */}
                 <span className="text-5xl font-bold tracking-tighter text-zinc-900">
                   {(resultado.gramasCo2Evitados / 1000).toFixed(2)}
                 </span>
