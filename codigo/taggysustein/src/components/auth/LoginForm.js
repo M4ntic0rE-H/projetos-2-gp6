@@ -1,0 +1,60 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import AuthInput from "./AuthInput";
+import AuthButton from "./AuthButton";
+
+export default function LoginForm() {
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [mostrarSenha, setMostrarSenha] = useState(false);
+
+  const handleLogin = () => {
+    if (email.trim() && senha.trim()) {
+      router.push("/calculadora");
+    } else {
+      alert("Preencha email e senha");
+    }
+  };
+
+  return (
+    <div className="bg-white p-8 rounded-2xl w-80 shadow-lg text-center">
+      <h2 className="mb-5 text-gray-700 text-lg font-medium">Acesse sua conta:</h2>
+
+      <AuthInput
+        type="text"
+        placeholder="E-mail ou CPF"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+
+      <AuthInput
+        type={mostrarSenha ? "text" : "password"}
+        placeholder="Senha"
+        value={senha}
+        onChange={(e) => setSenha(e.target.value)}
+        showPasswordToggle={true}
+        onTogglePassword={() => setMostrarSenha(!mostrarSenha)}
+        mostrarSenha={mostrarSenha}
+      />
+
+      <AuthButton onClick={handleLogin}>ENTRAR</AuthButton>
+
+      <a href="#" className="block mt-4 text-sm text-green-700 hover:underline">
+        Esqueci minha senha
+      </a>
+
+      <div className="h-px bg-gray-200 my-5"></div>
+
+      <p className="text-sm text-gray-500">
+        Não tem uma conta?{" "}
+        <span className="text-green-700 font-semibold cursor-pointer hover:underline">
+          Cadastre-se
+        </span>
+      </p>
+    </div>
+  );
+}
