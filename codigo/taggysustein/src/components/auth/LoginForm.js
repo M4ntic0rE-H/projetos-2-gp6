@@ -11,18 +11,48 @@ export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [mostrarSenha, setMostrarSenha] = useState(false);
+  const [erro, setErro] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
-    if (email.trim() && senha.trim()) {
-      router.push("/calculadora");
-    } else {
-      alert("Preencha email e senha");
+  const handleLogin = async () => {
+    setErro("");
+
+    if (!email.trim() || !senha.trim()) {
+      setErro("Preencha email e senha");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        "http://localhost:8080/api/v1/usuario/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, senha }),
+        },
+      );
+
+      if (response.ok) {
+        router.push("/calculadora");
+      } else {
+        setErro("E-mail ou senha inválidos.");
+      }
+    } catch (err) {
+      setErro("Erro de conexão com o servidor. O backend está rodando?");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="bg-white p-8 rounded-2xl w-80 shadow-lg text-center">
-      <h2 className="mb-5 text-gray-700 text-lg font-medium">Acesse sua conta:</h2>
+      <h2 className="mb-5 text-gray-700 text-lg font-medium">
+        Acesse sua conta:
+      </h2>
 
       <AuthInput
         type="text"
@@ -41,7 +71,11 @@ export default function LoginForm() {
         mostrarSenha={mostrarSenha}
       />
 
-      <AuthButton onClick={handleLogin}>ENTRAR</AuthButton>
+      {erro && <p className="text-red-500 text-sm mt-2 font-medium">{erro}</p>}
+
+      <AuthButton onClick={handleLogin}>
+        {loading ? "ENTRANDO..." : "ENTRAR"}
+      </AuthButton>
 
       <a href="#" className="block mt-4 text-sm text-green-700 hover:underline">
         Esqueci minha senha
