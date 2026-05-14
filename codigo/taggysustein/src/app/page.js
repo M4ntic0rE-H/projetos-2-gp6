@@ -108,7 +108,7 @@ export default function Home() {
   return (
     <div
       ref={containerRef}
-      className="min-h-screen bg-white font-sans text-gray-900 overflow-x-hidden"
+      className="bg-white font-sans text-gray-900"
     >
       {/* HEADER MODERNO */}
       <header className="absolute top-0 left-0 right-0 z-50 w-full px-6 md:px-12 py-8 flex items-center justify-between">
