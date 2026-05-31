@@ -104,6 +104,30 @@ Abaixo, detalhamos o cronograma planejado para as Sprints do projeto:
   </tr>
 </table>
 
+## Desenvolvimento
+
+### Issue/Bug Tracker 
+O gerenciamento de tarefas, bugs e novas funcionalidades está sendo mantido ativamente através do Bakclog do Jira. 
+Abaixo está a demonstração visual do estado atual do nosso tracker:
+
+![Issue Tracker do Projeto]()
+*colocar o path de algum issue entre os parênteses*
+
+
+### Testes de Sistema
+Para garantir a estabilidade e o funcionamento correto das principais jornadas do usuário, realizamos testes de sistema manuais. 
+
+* **Evidência de Execução:** O screencast mostrando a execução completa dos testes de sistema foi anexado correspondente no nosso quadro de tarefas.
+* 🔗 [Clique aqui para acessar o Cartão com o Screencast](URL_DO_SEU_CARTAO) *teste de sistema geral focando em funcionalidades chave*
+
+
+
+### Programação em Par (Pair Programming)
+Experimentamos a prática de programação em par durante o desenvolvimento desta entrega para compartilhar conhecimento e aumentar a qualidade do código. Abaixo está o relato das funcionalidades desenvolvidas e os respectivos pares:
+
+#### Relato da Experiência
+> *Insira relato de guerra aqui.).*
+
 ##  Integração com Jira
 Para manter a rastreabilidade do projeto:
 
