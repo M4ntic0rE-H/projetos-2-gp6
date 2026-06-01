@@ -139,7 +139,7 @@ Para garantir a estabilidade e o funcionamento correto das principais jornadas d
 
 
 ### Programação em Par (Pair Programming)
-Experimentamos a prática de programação em par durante o desenvolvimento desta entrega para compartilhar conhecimento e aumentar a qualidade do código. Abaixo está o relato das funcionalidades desenvolvidas e os respectivos pares:
+Experimentamos a prática de programação em par durante o desenvolvimento desta entrega para compartilhar conhecimento e aumentar a qualidade do código. Abaixo está o relato das funcionalidades desenvolvidas:
 
 #### Relato da Experiência
 - *O notebook de Pedro Lima teve problemas ao rodar o novo codigo da tela inicial junto com as novas implememntações do projeto, então Andre Montenegro seguiu o codigo de onde Pedro tinha parado onde ele pode atualizar e padronizar o codigo.*
