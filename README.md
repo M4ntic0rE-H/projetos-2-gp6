@@ -121,9 +121,7 @@ Falha de conexão de login
 Para garantir a estabilidade e o funcionamento correto das principais jornadas do usuário, realizamos testes de sistema manuais. 
 
 * **Evidência de Execução:** O screencast mostrando a execução completa dos testes de sistema foi anexado correspondente no nosso quadro de tarefas.
-<video width="600" height="300" controls alt="Video demonstração de funcionalidades básicas do projeto">
- <source scr="Showcase/2026-06-01 15-35-57.mp4" type="video/mp4" /> 
-</ video>
+Acesso: [Acesse o Screencast aqui](https://github.com/M4ntic0rE-H/projetos-2-gp6/blob/main/Showcase/2026-06-01%2015-35-57.mp4)
 
 
 ### Programação em Par (Pair Programming)
