@@ -110,15 +110,18 @@ Abaixo, detalhamos o cronograma planejado para as Sprints do projeto:
 O gerenciamento de tarefas, bugs e novas funcionalidades está sendo mantido ativamente através do Bakclog do Jira. 
 Abaixo está a demonstração visual do estado atual do nosso tracker:
 
-![Issue Tracker do Projeto]()
-*colocar o path de algum issue entre os parênteses*
+- Issue 01
+Falha de conexão de login 
+<img src="Imgs/IssuePrototipoLogin.jpeg" alt="Sprint atual para comprovação de cronograma" width="440" />
+
+*Status: Consertado.*
 
 
 ### Testes de Sistema
 Para garantir a estabilidade e o funcionamento correto das principais jornadas do usuário, realizamos testes de sistema manuais. 
 
 * **Evidência de Execução:** O screencast mostrando a execução completa dos testes de sistema foi anexado correspondente no nosso quadro de tarefas.
-* 🔗 [Clique aqui para acessar o Cartão com o Screencast](URL_DO_SEU_CARTAO) *teste de sistema geral focando em funcionalidades chave*
+* 🔗 [Clique aqui para acessar o Cartão com o Screencast](URL_DO_SEU_CARTAO) 
 
 
 
