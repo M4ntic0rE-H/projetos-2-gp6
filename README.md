@@ -99,7 +99,7 @@ Abaixo, detalhamos o cronograma planejado para as Sprints do projeto:
 <table>
   <tr>
     <td align="center" valign="top" width="50%">
-      <img src="Imgs/jirasprint1.JPG" alt="Sprint atual para comprovação de cronograma" width="440" />
+      <img src="Imgs/jirasprint1.2.png" alt="Sprint atual para comprovação de cronograma" width="440" />
     </td>
   </tr>
 </table>
@@ -111,10 +111,24 @@ O gerenciamento de tarefas, bugs e novas funcionalidades está sendo mantido ati
 Abaixo está a demonstração visual do estado atual do nosso tracker:
 
 - Issue 01
-Falha de conexão de login 
+Falha de conexão de login
+> Status: Consertado 
 <img src="Imgs/IssuePrototipoLogin.jpeg" alt="Imagem most" width="440" />
 
-*Status: Consertado.*
+
+
+- issue 02
+Tela Informativa falha durante desenvolvimento
+> Status: Abortado
+<img src="Imgs/TelaInformativaAbortadaValidation.png" alt="Imagem most" width="440" />
+
+
+
+- issue 03
+Delay em definição de Spike de Cálculos
+> Status: Consertado
+<img src="Imgs/SpikeCalculoConclusãoValidation.png" alt="Imagem most" width="440" />
+
 
 
 ### Testes de Sistema
@@ -128,8 +142,15 @@ Para garantir a estabilidade e o funcionamento correto das principais jornadas d
 Experimentamos a prática de programação em par durante o desenvolvimento desta entrega para compartilhar conhecimento e aumentar a qualidade do código. Abaixo está o relato das funcionalidades desenvolvidas e os respectivos pares:
 
 #### Relato da Experiência
-> *O notebook de Pedro Lima teve problemas ao rodar o novo codigo da tela inicial junto com as novas implememntações do projeto, então Andre Montenegro seguiu o codigo de onde Pedro tinha parado onde ele pode atualizar e padronizar o codigo.*
+- *O notebook de Pedro Lima teve problemas ao rodar o novo codigo da tela inicial junto com as novas implememntações do projeto, então Andre Montenegro seguiu o codigo de onde Pedro tinha parado onde ele pode atualizar e padronizar o codigo.*
 <img src="Imgs/UsuárioB2CValidation.png" alt="ticket para comprovação de cronograma" width="440" />
+
+- *A parte de front-end ficou responsável por Pedro Lima e a contraparte foi suplementada Por Andre Montenegro, ligando os pontos de requisição com o banco de dados no back-end*
+<img src="Imgs/LoginMarAbertoValidation.png" alt="ticket para comprovação de cronograma" width="440" />
+
+
+
+
 
 
 ##  Integração com Jira
