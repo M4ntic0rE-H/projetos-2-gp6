@@ -17,16 +17,19 @@ import {
   Inbox,
   ChevronDown,
   Calendar,
+  CheckCircle2,
 } from "lucide-react";
 import { Inter } from "next/font/google";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import Vehicles from "./Vehicles";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Dashboard({ onOpenExportModal, onOpenCalculator }) {
   const [activeTab, setActiveTab] = useState("overview");
   const [userName, setUserName] = useState("");
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const containerRef = useRef(null);
 
   const displayUserName = userName.toLowerCase().startsWith("usuario")
@@ -37,7 +40,14 @@ export default function Dashboard({ onOpenExportModal, onOpenCalculator }) {
   useEffect(() => {
     const savedName = localStorage.getItem("userName");
     if (savedName) setUserName(savedName);
+    else setUserName("Camila"); // Fallback inicial
   }, []);
+
+  const handleSelectUser = (newName) => {
+    setUserName(newName);
+    localStorage.setItem("userName", newName);
+    setIsUserMenuOpen(false);
+  };
 
   useGSAP(
     () => {
@@ -180,7 +190,14 @@ export default function Dashboard({ onOpenExportModal, onOpenCalculator }) {
                 Gerenciamento
               </div>
               <div className="space-y-0.5">
-                <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-500 hover:bg-emerald-50 hover:text-[#065f46] transition-all font-medium">
+                <button
+                  onClick={() => setActiveTab("vehicles")}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all ${
+                    activeTab === "vehicles"
+                      ? "bg-white shadow-sm border border-gray-200/60 text-[#065f46] font-semibold"
+                      : "text-gray-500 hover:bg-emerald-50 hover:text-[#065f46] font-medium"
+                  }`}
+                >
                   <svg
                     className="w-4 h-4"
                     fill="none"
@@ -228,23 +245,50 @@ export default function Dashboard({ onOpenExportModal, onOpenCalculator }) {
             </div>
           </div>
 
-          <div className="mt-auto bg-white border border-gray-200 rounded-xl p-3 flex items-center gap-3 shadow-sm cursor-pointer hover:border-[#065f46]/30 transition-colors">
-            <div className="w-8 h-8 rounded-full bg-emerald-50 overflow-hidden border border-emerald-100">
-              <img
-                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(displayUserName)}&background=065f46&color=fff`}
-                alt="Avatar"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="text-sm font-semibold text-gray-900 truncate">
-                {displayUserName}
+          <div className="relative mt-auto">
+            <div 
+              onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+              className="bg-white border border-gray-200 rounded-xl p-3 flex items-center gap-3 shadow-sm cursor-pointer hover:border-[#065f46]/30 transition-colors group"
+            >
+              <div className="w-8 h-8 rounded-full bg-emerald-50 overflow-hidden border border-emerald-100">
+                <img
+                  src={`https://ui-avatars.com/api/?name=${encodeURIComponent(displayUserName)}&background=065f46&color=fff`}
+                  alt="Avatar"
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <div className="text-[11px] text-[#065f46] font-medium truncate">
-                Plano Essencial
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-semibold text-gray-900 truncate">
+                  {displayUserName}
+                </div>
+                <div className="text-[11px] text-[#065f46] font-medium truncate">
+                  Plano Essencial
+                </div>
               </div>
+              <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`} />
             </div>
-            <ChevronDown className="w-4 h-4 text-gray-400" />
+
+            {isUserMenuOpen && (
+              <div className="absolute bottom-[calc(100%+8px)] left-0 w-full bg-white border border-gray-200 rounded-xl shadow-lg p-2 z-50 animate-in fade-in slide-in-from-bottom-2 duration-200">
+                <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest px-2 pb-2 mb-2 border-b border-gray-100">
+                  Trocar Conta
+                </div>
+                <button
+                  onClick={() => handleSelectUser("Camila")}
+                  className={`w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors ${userName.toLowerCase() === 'camila' ? 'bg-emerald-50 text-[#065f46]' : 'text-gray-700 hover:bg-gray-50'}`}
+                >
+                  Camila (B2C)
+                  {userName.toLowerCase() === 'camila' && <CheckCircle2 className="w-4 h-4" />}
+                </button>
+                <button
+                  onClick={() => handleSelectUser("Helena")}
+                  className={`w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors mt-1 ${userName.toLowerCase() === 'helena' ? 'bg-emerald-50 text-[#065f46]' : 'text-gray-700 hover:bg-gray-50'}`}
+                >
+                  Helena (B2B)
+                  {userName.toLowerCase() === 'helena' && <CheckCircle2 className="w-4 h-4" />}
+                </button>
+              </div>
+            )}
           </div>
         </nav>
 
@@ -295,8 +339,11 @@ export default function Dashboard({ onOpenExportModal, onOpenCalculator }) {
           </header>
 
           <div className="flex-1 overflow-y-auto p-8 scrollbar-hide">
-            <div className="max-w-[1200px] mx-auto space-y-6">
-              <div className="dash-welcome flex justify-between items-end mb-8">
+            {activeTab === "vehicles" ? (
+              <Vehicles userName={userName} />
+            ) : (
+              <div className="max-w-[1200px] mx-auto space-y-6">
+                <div className="dash-welcome flex justify-between items-end mb-8">
                 <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
                   Bem-vindo de volta, {displayUserName}.
                 </h1>
@@ -682,7 +729,8 @@ export default function Dashboard({ onOpenExportModal, onOpenCalculator }) {
                   </table>
                 </div>
               </div>
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
