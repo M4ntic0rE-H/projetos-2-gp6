@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function AuthButton({ onClick, children }) {
+export default function BotaoAutenticacao({ onClick, children }) {
   return (
     <button
       onClick={onClick}

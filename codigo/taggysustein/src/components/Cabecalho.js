@@ -1,6 +1,6 @@
 import { Calculator } from "lucide-react";
 
-export default function Header() {
+export default function Cabecalho() {
   return (
     <div className="mb-10 text-center">
       <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-emerald-100 mb-4">

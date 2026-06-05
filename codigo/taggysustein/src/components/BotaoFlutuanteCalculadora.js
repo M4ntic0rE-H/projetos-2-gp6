@@ -1,4 +1,4 @@
-export default function CalculatorFloatingButton({ onClick }) {
+export default function BotaoFlutuanteCalculadora({ onClick }) {
   return (
     <button
       onClick={onClick}

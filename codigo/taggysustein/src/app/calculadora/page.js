@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import Dashboard from "@/components/Dashboard";
+import Painel from "@/components/Painel";
 import CalculadoraForm from "@/components/CalculadoraForm";
 import ResultadoCalculadora from "@/components/ResultadoCalculadora";
-import CalculatorFloatingButton from "@/components/CalculatorFloatingButton";
+import BotaoFlutuanteCalculadora from "@/components/BotaoFlutuanteCalculadora";
 
 export default function CalculadoraPage() {
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
@@ -15,7 +15,7 @@ export default function CalculadoraPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 md:p-8">
       <div className="w-full max-w-6xl">
-        <Dashboard
+        <Painel
           onOpenExportModal={() => {}}
           onOpenCalculator={handleOpenCalculator}
         />
@@ -34,7 +34,7 @@ export default function CalculadoraPage() {
         )}
 
         {!isCalculatorOpen && (
-          <CalculatorFloatingButton onClick={handleOpenCalculator} />
+          <BotaoFlutuanteCalculadora onClick={handleOpenCalculator} />
         )}
       </div>
     </div>
