@@ -12,7 +12,7 @@ import {
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
-export default function Vehicles({ userName }) {
+export default function Veiculos({ userName }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({ role: "", vehicles: [] });
   const [isModalOpen, setIsModalOpen] = useState(false);

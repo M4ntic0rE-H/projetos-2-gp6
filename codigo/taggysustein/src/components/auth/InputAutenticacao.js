@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function AuthInput({
+export default function InputAutenticacao({
   type,
   placeholder,
   value,

@@ -93,7 +93,7 @@ function SearchableSelect({
   );
 }
 
-export default function LandingCalculator() {
+export default function CalculadoraLanding() {
   const containerRef = useRef(null);
   const [tipoVeiculo, setTipoVeiculo] = useState("Leve");
   const [pedagiosPorMes, setPedagiosPorMes] = useState("40");

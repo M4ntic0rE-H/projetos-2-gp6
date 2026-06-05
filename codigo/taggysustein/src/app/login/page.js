@@ -1,9 +1,9 @@
-import LoginForm from "@/components/auth/LoginForm";
+import FormularioLogin from "@/components/auth/FormularioLogin";
 
 export default function LoginPage() {
   return (
     <main>
-      <LoginForm />
+      <FormularioLogin />
     </main>
   );
 }

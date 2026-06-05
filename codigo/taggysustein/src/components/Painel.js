@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import CalculatorFloatingButton from "./CalculatorFloatingButton";
+import BotaoFlutuanteCalculadora from "./BotaoFlutuanteCalculadora";
 import {
   Leaf,
   Home,
@@ -18,18 +18,21 @@ import {
   ChevronDown,
   Calendar,
   CheckCircle2,
+  LogOut,
 } from "lucide-react";
 import { Inter } from "next/font/google";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import Vehicles from "./Vehicles";
+import Veiculos from "./Veiculos";
+import ModalExportarRelatorio from "./ModalExportarRelatorio";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Dashboard({ onOpenExportModal, onOpenCalculator }) {
+export default function Painel({ onOpenExportModal, onOpenCalculator }) {
   const [activeTab, setActiveTab] = useState("overview");
   const [userName, setUserName] = useState("");
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const containerRef = useRef(null);
 
   const displayUserName = userName.toLowerCase().startsWith("usuario")
@@ -114,6 +117,43 @@ export default function Dashboard({ onOpenExportModal, onOpenCalculator }) {
     { scope: containerRef },
   );
 
+  const isB2B = userName.toLowerCase().includes("helena");
+  const dashboardData = isB2B ? {
+    metrics: [
+      { title: "EMISSÕES EVITADAS", value: "1.240 kg", trend: "+45 kg", trendDesc: "mês passado", hasChart: true },
+      { title: "TEMPO ECONOMIZADO", value: "142 horas", trend: "+12h", trendDesc: "mês passado", hasChart: true },
+      { title: "NOVAS PASSAGENS", value: "480", trend: "+54", trendDesc: "mês passado", hasChart: false },
+      { title: "ECONOMIA TAGGY", value: "R$ 1.940,00", trend: "+R$ 215,00", trendDesc: "mês passado", hasChart: true },
+    ],
+    emissionsTotal: "1.240 kg CO₂",
+    impactChart: [60, 75, 50, 80, 95, 60, 85, 70, 95, 80, 70, 85],
+    economyTotal: "R$ 1.940,00",
+    discountChart: [80, 60, 90, 70, 95, 60, 85, 100, 75, 90, 65],
+    history: [
+      { id: "#05001", praca: "Frota Principal - Boa Viagem", estado: "Pernambuco", status: "Success", ec: "R$ 45,00" },
+      { id: "#05002", praca: "Frota Secundária - Igarassu", estado: "Pernambuco", status: "Success", ec: "R$ 38,00" },
+      { id: "#05003", praca: "Frota Principal - Paulista", estado: "Pernambuco", status: "Pending", ec: "R$ 25,00" },
+      { id: "#05004", praca: "Frota Extra - Cabo de Sto. Agostinho", estado: "Pernambuco", status: "Refunded", ec: "R$ 50,00" },
+    ]
+  } : {
+    metrics: [
+      { title: "EMISSÕES EVITADAS", value: "31 kg", trend: "+1.2 kg", trendDesc: "mês passado", hasChart: true },
+      { title: "TEMPO ECONOMIZADO", value: "24 min", trend: "+4 min", trendDesc: "mês passado", hasChart: true },
+      { title: "NOVAS PASSAGENS", value: "12", trend: "+2", trendDesc: "mês passado", hasChart: false },
+      { title: "ECONOMIA TAGGY", value: "R$ 48,50", trend: "+R$ 6,00", trendDesc: "mês passado", hasChart: true },
+    ],
+    emissionsTotal: "31 kg CO₂",
+    impactChart: [30, 45, 25, 60, 85, 40, 75, 30, 90, 50, 40, 65],
+    economyTotal: "R$ 48,50",
+    discountChart: [60, 40, 70, 50, 80, 40, 65, 90, 55, 75, 45],
+    history: [
+      { id: "#04910", praca: "Boa Viagem", estado: "Pernambuco", status: "Success", ec: "R$ 4,50" },
+      { id: "#04911", praca: "Igarassu", estado: "Pernambuco", status: "Success", ec: "R$ 3,80" },
+      { id: "#04912", praca: "Paulista", estado: "Pernambuco", status: "Pending", ec: "R$ 2,50" },
+      { id: "#04913", praca: "Cabo de Sto. Agostinho", estado: "Pernambuco", status: "Refunded", ec: "R$ 5,00" },
+    ]
+  };
+
   return (
     <div
       ref={containerRef}
@@ -121,7 +161,10 @@ export default function Dashboard({ onOpenExportModal, onOpenCalculator }) {
     >
       <div className="flex w-full h-full bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
         <nav className="dash-sidebar w-64 min-w-[16rem] bg-[#FAFBFC] border-r border-gray-200 flex flex-col pt-6 pb-4 px-4 z-10">
-          <div className="flex items-center gap-3 mb-8 px-2">
+          <div 
+            onClick={() => setActiveTab("overview")}
+            className="flex items-center gap-3 mb-8 px-2 cursor-pointer hover:opacity-80 transition-opacity"
+          >
             <div className="w-9 h-9 rounded-xl bg-[#065f46] flex items-center justify-center shadow-sm">
               <Leaf className="w-5 h-5 text-white" strokeWidth={2.5} />
             </div>
@@ -150,7 +193,7 @@ export default function Dashboard({ onOpenExportModal, onOpenCalculator }) {
                   }`}
                 >
                   <Home className="w-4 h-4" />
-                  Dashboard
+                  Painel
                 </button>
                 <button
                   onClick={() => setActiveTab("products")}
@@ -287,6 +330,14 @@ export default function Dashboard({ onOpenExportModal, onOpenCalculator }) {
                   Helena (B2B)
                   {userName.toLowerCase() === 'helena' && <CheckCircle2 className="w-4 h-4" />}
                 </button>
+                <div className="my-1 border-t border-gray-100"></div>
+                <button
+                  onClick={() => window.location.href = "/"}
+                  className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors text-red-600 hover:bg-red-50"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sair
+                </button>
               </div>
             )}
           </div>
@@ -340,7 +391,7 @@ export default function Dashboard({ onOpenExportModal, onOpenCalculator }) {
 
           <div className="flex-1 overflow-y-auto p-8 scrollbar-hide">
             {activeTab === "vehicles" ? (
-              <Vehicles userName={userName} />
+              <Veiculos userName={userName} />
             ) : (
               <div className="max-w-[1200px] mx-auto space-y-6">
                 <div className="dash-welcome flex justify-between items-end mb-8">
@@ -356,7 +407,7 @@ export default function Dashboard({ onOpenExportModal, onOpenCalculator }) {
                     <ChevronDown className="w-4 h-4" />
                   </button>
                   <button
-                    onClick={onOpenExportModal}
+                    onClick={() => setIsExportModalOpen(true)}
                     className="flex items-center gap-2 px-4 py-1.5 bg-[#065f46] hover:bg-[#044e3a] text-white rounded-md text-sm font-medium transition-colors shadow-sm ml-2"
                   >
                     <Download className="w-4 h-4" /> Exportar PDF
@@ -364,46 +415,6 @@ export default function Dashboard({ onOpenExportModal, onOpenCalculator }) {
                 </div>
               </div>
 
-              {(() => {
-                const isB2B = userName.toLowerCase().includes("helena");
-                
-                const dashboardData = isB2B ? {
-                  metrics: [
-                    { title: "EMISSÕES EVITADAS", value: "1.240 kg", trend: "+45 kg", trendDesc: "mês passado", hasChart: true },
-                    { title: "TEMPO ECONOMIZADO", value: "142 horas", trend: "+12h", trendDesc: "mês passado", hasChart: true },
-                    { title: "NOVAS PASSAGENS", value: "480", trend: "+54", trendDesc: "mês passado", hasChart: false },
-                    { title: "ECONOMIA TAGGY", value: "R$ 1.940,00", trend: "+R$ 215,00", trendDesc: "mês passado", hasChart: true },
-                  ],
-                  emissionsTotal: "1.240 kg CO₂",
-                  impactChart: [60, 75, 50, 80, 95, 60, 85, 70, 95, 80, 70, 85],
-                  economyTotal: "R$ 1.940,00",
-                  discountChart: [80, 60, 90, 70, 95, 60, 85, 100, 75, 90, 65],
-                  history: [
-                    { id: "#05001", praca: "Frota Principal - Boa Viagem", estado: "Pernambuco", status: "Success", ec: "R$ 45,00" },
-                    { id: "#05002", praca: "Frota Secundária - Igarassu", estado: "Pernambuco", status: "Success", ec: "R$ 38,00" },
-                    { id: "#05003", praca: "Frota Principal - Paulista", estado: "Pernambuco", status: "Pending", ec: "R$ 25,00" },
-                    { id: "#05004", praca: "Frota Extra - Cabo de Sto. Agostinho", estado: "Pernambuco", status: "Refunded", ec: "R$ 50,00" },
-                  ]
-                } : {
-                  metrics: [
-                    { title: "EMISSÕES EVITADAS", value: "31 kg", trend: "+1.2 kg", trendDesc: "mês passado", hasChart: true },
-                    { title: "TEMPO ECONOMIZADO", value: "24 min", trend: "+4 min", trendDesc: "mês passado", hasChart: true },
-                    { title: "NOVAS PASSAGENS", value: "12", trend: "+2", trendDesc: "mês passado", hasChart: false },
-                    { title: "ECONOMIA TAGGY", value: "R$ 48,50", trend: "+R$ 6,00", trendDesc: "mês passado", hasChart: true },
-                  ],
-                  emissionsTotal: "31 kg CO₂",
-                  impactChart: [30, 45, 25, 60, 85, 40, 75, 30, 90, 50, 40, 65],
-                  economyTotal: "R$ 48,50",
-                  discountChart: [60, 40, 70, 50, 80, 40, 65, 90, 55, 75, 45],
-                  history: [
-                    { id: "#04910", praca: "Boa Viagem", estado: "Pernambuco", status: "Success", ec: "R$ 4,50" },
-                    { id: "#04911", praca: "Igarassu", estado: "Pernambuco", status: "Success", ec: "R$ 3,80" },
-                    { id: "#04912", praca: "Paulista", estado: "Pernambuco", status: "Pending", ec: "R$ 2,50" },
-                    { id: "#04913", praca: "Cabo de Sto. Agostinho", estado: "Pernambuco", status: "Refunded", ec: "R$ 5,00" },
-                  ]
-                };
-
-                return (
                   <>
                     <div className="grid grid-cols-4 gap-4">
                       {dashboardData.metrics.map((metric, idx) => (
@@ -709,15 +720,20 @@ export default function Dashboard({ onOpenExportModal, onOpenCalculator }) {
                       </div>
                     </div>
                   </>
-                );
-              })()}
               </div>
             )}
           </div>
         </div>
       </div>
 
-      <CalculatorFloatingButton onClick={onOpenCalculator} />
+      <ModalExportarRelatorio 
+        isOpen={isExportModalOpen} 
+        onClose={() => setIsExportModalOpen(false)} 
+        data={dashboardData}
+        userName={displayUserName}
+      />
+
+      <BotaoFlutuanteCalculadora onClick={onOpenCalculator} />
     </div>
   );
 }

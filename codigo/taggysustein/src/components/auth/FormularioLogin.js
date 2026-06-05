@@ -6,7 +6,7 @@ import { Leaf } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
-export default function LoginForm() {
+export default function FormularioLogin() {
   const router = useRouter();
   const containerRef = useRef(null);
   const routeRef = useRef(null);
