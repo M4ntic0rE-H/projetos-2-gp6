@@ -144,6 +144,11 @@ Falta do ambiente do Back-End para relatório de emissão e opção de export
 > Status: Não Concluido
 <img src="Imgs/IssueRelatorioExport.JPG" alt="Imagem most" width="440" />
 
+- issue 07
+Definição de campo de dados do usuário
+> Status: Abortado
+<img src="Imgs/IssueBuscaDeDadosUser.JPG" alt="Imagem most" width="440" />
+
 
 ### Testes de Sistema
 Para garantir a estabilidade e o funcionamento correto das principais jornadas do usuário, realizamos testes de sistema manuais. 
