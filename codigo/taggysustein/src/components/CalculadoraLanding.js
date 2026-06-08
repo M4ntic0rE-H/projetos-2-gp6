@@ -12,94 +12,15 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-
-function SearchableSelect({
-  label,
-  placeholder,
-  items,
-  value,
-  onChange,
-  disabled,
-}) {
-  const [open, setOpen] = useState(false);
-
-  const safeItems = items || [];
-
-  return (
-    <div className="w-full">
-      <label className="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
-        {label}
-      </label>
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <button
-            suppressHydrationWarning
-            disabled={disabled}
-            type="button"
-            className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-300 transition-shadow disabled:opacity-60 disabled:cursor-not-allowed text-left"
-          >
-            <span className="truncate">
-              {value
-                ? safeItems.find((item) => item.valor === value)?.nome ||
-                  placeholder
-                : placeholder}
-            </span>
-            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-          </button>
-        </PopoverTrigger>
-        <PopoverContent
-          className="w-[var(--radix-popover-trigger-width)] p-0"
-          align="start"
-        >
-          <Command>
-            <CommandInput placeholder={`Buscar ${label.toLowerCase()}...`} />
-            <CommandList>
-              <CommandEmpty>Nenhum resultado.</CommandEmpty>
-              <CommandGroup>
-                {safeItems.map((item) => (
-                  <CommandItem
-                    key={item.valor}
-                    value={item.nome}
-                    onSelect={() => {
-                      onChange(item.valor, item.nome);
-                      setOpen(false);
-                    }}
-                  >
-                    <Check
-                      className={`mr-2 h-4 w-4 ${value === item.valor ? "opacity-100" : "opacity-0"}`}
-                    />
-                    {item.nome}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
-    </div>
-  );
-}
+import SearchableSelect from "./SearchableSelect";
 
 export default function CalculadoraLanding() {
   const containerRef = useRef(null);
-  const [tipoVeiculo, setTipoVeiculo] = useState("Leve");
-  const [pedagiosPorMes, setPedagiosPorMes] = useState("40");
+  const [pedagiosPorMes, setPedagiosPorMes] = useState("0");
+  const [estacionamentosPorMes, setEstacionamentosPorMes] = useState("0");
+  const [fuelType, setFuelType] = useState("GASOLINA");
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
-  const [valorMedio, setValorMedio] = useState("8,50");
 
   // FIPE
   const [marcas, setMarcas] = useState([]);
@@ -130,8 +51,9 @@ export default function CalculadoraLanding() {
       !anoSelecionado ||
       !modeloSelecionado ||
       !marcaSelecionada ||
-      !valorMedio ||
-      !pedagiosPorMes
+      !pedagiosPorMes ||
+      !estacionamentosPorMes ||
+      !fuelType
     ) {
       setErrorMessage("Por favor, preencha todos os campos obrigatórios.");
       setIsErrorModalOpen(true);
@@ -152,20 +74,47 @@ export default function CalculadoraLanding() {
       anoCalculo = new Date().getFullYear();
 
     try {
-      // Simulando a requisição para a API (Mock), já que a rota /calculo/impacto ainda não existe no Java
-      // const response = await fetch("http://localhost:8080/api/v1/calculo/impacto", { ... })
-      await new Promise(resolve => setTimeout(resolve, 1500)); // Simula tempo de rede
-      
-      const data = {
-        gramasCo2Evitados: Math.floor(Math.random() * 5000) + 2000,
-        arvoresEquivalentes: Math.floor(Math.random() * 5) + 1,
-        percentualReducao: Math.floor(Math.random() * 15) + 5
+      const payload = {
+        nomeCompleto: nome,
+        email: email,
+        marcaVeiculo: marcaNome,
+        modeloVeiculo: modeloNome,
+        anoVeiculo:
+          anoNome === "Zero km" ? new Date().getFullYear() : parseInt(anoNome),
+        totalPassagensPedagio: parseInt(pedagiosPorMes) || 0,
+        totalPassagensEstacionamento: parseInt(estacionamentosPorMes) || 0,
+        fuelType: fuelType,
       };
+
+      const response = await fetch("http://127.0.0.1:8080/api/v1/calculo/b2c", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        let errorText = await response.text();
+        try {
+          const jsonError = JSON.parse(errorText);
+          if (jsonError.message || jsonError.error) {
+            errorText = jsonError.message || jsonError.error;
+          }
+        } catch (e) {}
+        throw new Error(`Erro ${response.status}: ${errorText}`);
+      }
+
+      const data = await response.json();
+
       const resultadoCompleto = {
-        ...data,
+        gramasCo2Evitados: data.gramasCo2Evitados,
+        arvoresEquivalentes: data.arvoresEquivalentes,
+        litrosCombustivelEvitados: data.litrosCombustivelEvitados,
+        gramasPapelEvitados: data.gramasPapelEvitados,
+        tempoGanhoSegundos: data.tempoGanhoSegundos,
+        percentualReducao: 15,
         pedagiosPorMes,
-        valorMedio: Number(valorMedio.replace(",", ".")),
       };
+
       localStorage.setItem(
         "taggySustainResultado",
         JSON.stringify(resultadoCompleto),
@@ -174,7 +123,9 @@ export default function CalculadoraLanding() {
     } catch (err) {
       console.error(err);
       if (err.name === "TypeError" && err.message.includes("fetch")) {
-        setErrorMessage("O backend Java não está rodando na porta 8080 ou está bloqueando a conexão (CORS).");
+        setErrorMessage(
+          "O backend Java não está rodando na porta 8081 ou está bloqueando a conexão (CORS).",
+        );
       } else {
         setErrorMessage(err.message || "Falha de conexão com a API.");
       }
@@ -188,7 +139,7 @@ export default function CalculadoraLanding() {
     const fetchMarcas = async () => {
       setLoadingFipe(true);
       try {
-        const tipoFipe = tipoVeiculo === "Leve" ? "carros" : "caminhoes";
+        const tipoFipe = "carros";
         const res = await fetch(
           `https://parallelum.com.br/fipe/api/v1/${tipoFipe}/marcas`,
         );
@@ -209,8 +160,10 @@ export default function CalculadoraLanding() {
 
         let mappedData = (Array.isArray(data) ? data : []).map((item) => {
           let nomeLimpo = item.nome;
-          if (nomeLimpo.toUpperCase() === "GM - CHEVROLET") nomeLimpo = "Chevrolet";
-          if (nomeLimpo.toUpperCase() === "VW - VOLKSWAGEN") nomeLimpo = "Volkswagen";
+          if (nomeLimpo.toUpperCase() === "GM - CHEVROLET")
+            nomeLimpo = "Chevrolet";
+          if (nomeLimpo.toUpperCase() === "VW - VOLKSWAGEN")
+            nomeLimpo = "Volkswagen";
           return {
             nome: nomeLimpo,
             valor: item.codigo || item.valor,
@@ -239,7 +192,7 @@ export default function CalculadoraLanding() {
       }
     };
     fetchMarcas();
-  }, [tipoVeiculo]);
+  }, []);
 
   useEffect(() => {
     const fetchModelos = async () => {
@@ -252,34 +205,126 @@ export default function CalculadoraLanding() {
       }
       setLoadingFipe(true);
       try {
-        const marcaObj = marcas.find(m => m.valor === marcaSelecionada);
+        const marcaObj = marcas.find((m) => m.valor === marcaSelecionada);
         const nomeDaMarca = marcaObj ? marcaObj.nome : "";
 
         const whitelistMap = {
-          "Volkswagen": ["Gol", "Polo", "Fox", "Up!", "Nivus", "T-Cross", "Taos", "Tiguan", "Amarok", "Jetta", "Virtus", "Voyage", "Saveiro"],
-          "Chevrolet": ["Onix", "Prisma", "Cruze", "Tracker", "S10", "Spin", "Cobalt", "Montana", "Celta", "Corsa", "Vectra", "Astra", "Meriva", "Zafira", "Equinox"],
-          "Fiat": ["Argo", "Mobi", "Cronos", "Pulse", "Fastback", "Toro", "Strada", "Fiorino", "Palio", "Uno", "Siena", "Grand Siena", "Punto", "Idea", "Bravo"],
-          "Ford": ["Ka", "Fiesta", "Focus", "EcoSport", "Ranger", "Fusion", "Mustang", "Territory", "Bronco"],
-          "Toyota": ["Corolla", "Hilux", "Yaris", "Etios", "RAV4", "SW4", "Corolla Cross"],
-          "Honda": ["Civic", "Fit", "HR-V", "City", "CR-V", "WR-V", "Accord", "ZR-V"],
-          "Hyundai": ["HB20", "HB20S", "Creta", "Tucson", "Santa Fe", "Azera", "Elantra", "i30", "IX35"],
-          "Renault": ["Kwid", "Sandero", "Logan", "Duster", "Captur", "Oroch", "Fluence", "Clio"],
-          "Jeep": ["Renegade", "Compass", "Commander", "Wrangler", "Cherokee"],
-          "Nissan": ["Kicks", "Versa", "Sentra", "Frontier", "March"]
+          Volkswagen: [
+            "Gol",
+            "Polo",
+            "Fox",
+            "Up!",
+            "Nivus",
+            "T-Cross",
+            "Taos",
+            "Tiguan",
+            "Amarok",
+            "Jetta",
+            "Virtus",
+            "Voyage",
+            "Saveiro",
+          ],
+          Chevrolet: [
+            "Onix",
+            "Prisma",
+            "Cruze",
+            "Tracker",
+            "S10",
+            "Spin",
+            "Cobalt",
+            "Montana",
+            "Celta",
+            "Corsa",
+            "Vectra",
+            "Astra",
+            "Meriva",
+            "Zafira",
+            "Equinox",
+          ],
+          Fiat: [
+            "Argo",
+            "Mobi",
+            "Cronos",
+            "Pulse",
+            "Fastback",
+            "Toro",
+            "Strada",
+            "Fiorino",
+            "Palio",
+            "Uno",
+            "Siena",
+            "Grand Siena",
+            "Punto",
+            "Idea",
+            "Bravo",
+          ],
+          Ford: [
+            "Ka",
+            "Fiesta",
+            "Focus",
+            "EcoSport",
+            "Ranger",
+            "Fusion",
+            "Mustang",
+            "Territory",
+            "Bronco",
+          ],
+          Toyota: [
+            "Corolla",
+            "Hilux",
+            "Yaris",
+            "Etios",
+            "RAV4",
+            "SW4",
+            "Corolla Cross",
+          ],
+          Honda: [
+            "Civic",
+            "Fit",
+            "HR-V",
+            "City",
+            "CR-V",
+            "WR-V",
+            "Accord",
+            "ZR-V",
+          ],
+          Hyundai: [
+            "HB20",
+            "HB20S",
+            "Creta",
+            "Tucson",
+            "Santa Fe",
+            "Azera",
+            "Elantra",
+            "i30",
+            "IX35",
+          ],
+          Renault: [
+            "Kwid",
+            "Sandero",
+            "Logan",
+            "Duster",
+            "Captur",
+            "Oroch",
+            "Fluence",
+            "Clio",
+          ],
+          Jeep: ["Renegade", "Compass", "Commander", "Wrangler", "Cherokee"],
+          Nissan: ["Kicks", "Versa", "Sentra", "Frontier", "March"],
         };
 
         let uniqueModelNames = [];
 
-        if (tipoVeiculo === "Leve" && whitelistMap[nomeDaMarca]) {
+        if (whitelistMap[nomeDaMarca]) {
           uniqueModelNames = whitelistMap[nomeDaMarca];
         } else {
-          const tipoFipe = tipoVeiculo === "Leve" ? "carros" : "caminhoes";
+          const tipoFipe = "carros";
           const res = await fetch(
             `https://parallelum.com.br/fipe/api/v1/${tipoFipe}/marcas/${marcaSelecionada}/modelos`,
           );
           const data = await res.json();
           const modelosRaw = Array.isArray(data) ? data : data.modelos || [];
-          
+
           const getBaseModel = (name) => {
             const parts = name
               .replace(/\(novo\)/gi, "")
@@ -287,7 +332,21 @@ export default function CalculadoraLanding() {
               .trim()
               .split(" ");
             let base = parts[0];
-            const twoWordBases = ["Grand", "Santa", "Land", "Range", "Aston", "Alfa", "C3", "C4", "Palio", "Space", "Cross", "Eco", "T-Cross"];
+            const twoWordBases = [
+              "Grand",
+              "Santa",
+              "Land",
+              "Range",
+              "Aston",
+              "Alfa",
+              "C3",
+              "C4",
+              "Palio",
+              "Space",
+              "Cross",
+              "Eco",
+              "T-Cross",
+            ];
             if (parts.length > 1 && twoWordBases.includes(base)) {
               base += " " + parts[1];
             }
@@ -317,7 +376,7 @@ export default function CalculadoraLanding() {
       }
     };
     fetchModelos();
-  }, [marcaSelecionada, tipoVeiculo]);
+  }, [marcaSelecionada]);
 
   // Buscar anos ao selecionar modelo
   useEffect(() => {
@@ -337,7 +396,7 @@ export default function CalculadoraLanding() {
     setAnos(staticYears);
     setAnoSelecionado("");
     setLoadingFipe(false);
-  }, [modeloSelecionado, marcaSelecionada, tipoVeiculo]);
+  }, [modeloSelecionado, marcaSelecionada]);
 
   useGSAP(
     () => {
@@ -407,23 +466,6 @@ export default function CalculadoraLanding() {
                 </h3>
               </div>
               <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="w-full">
-                  <label
-                    htmlFor="tipoVeiculo"
-                    className="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5"
-                  >
-                    Tipo
-                  </label>
-                  <select
-                    id="tipoVeiculo"
-                    value={tipoVeiculo}
-                    onChange={(e) => setTipoVeiculo(e.target.value)}
-                    className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-300 transition-shadow cursor-pointer"
-                  >
-                    <option value="Leve">Leve (Carro/Moto)</option>
-                    <option value="Pesado">Pesado (Caminhão/Ônibus)</option>
-                  </select>
-                </div>
                 <SearchableSelect
                   label="Marca"
                   placeholder="Selecione a marca..."
@@ -435,8 +477,6 @@ export default function CalculadoraLanding() {
                   }}
                   disabled={loadingFipe || marcas.length === 0}
                 />
-              </div>
-              <div className="grid grid-cols-2 gap-4 mb-4">
                 <SearchableSelect
                   label="Modelo"
                   placeholder="Selecione o modelo..."
@@ -450,6 +490,8 @@ export default function CalculadoraLanding() {
                     loadingFipe || modelos.length === 0 || !marcaSelecionada
                   }
                 />
+              </div>
+              <div className="grid grid-cols-2 gap-4 mb-4">
                 <SearchableSelect
                   label="Ano"
                   placeholder="Selecione o ano..."
@@ -463,6 +505,24 @@ export default function CalculadoraLanding() {
                     loadingFipe || anos.length === 0 || !modeloSelecionado
                   }
                 />
+                <div className="w-full">
+                  <label
+                    htmlFor="fuelType"
+                    className="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5"
+                  >
+                    Tipo de Combustível
+                  </label>
+                  <select
+                    id="fuelType"
+                    value={fuelType}
+                    onChange={(e) => setFuelType(e.target.value)}
+                    disabled={loading}
+                    className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-300 transition-shadow cursor-pointer disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
+                  >
+                    <option value="GASOLINA">Gasolina</option>
+                    <option value="DIESEL">Diesel</option>
+                  </select>
+                </div>
               </div>
             </div>
 
@@ -487,7 +547,8 @@ export default function CalculadoraLanding() {
                     placeholder="Seu nome"
                     value={nome}
                     onChange={(e) => setNome(e.target.value)}
-                    className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-300 transition-shadow"
+                    disabled={loading}
+                    className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-300 transition-shadow disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
                   />
                 </div>
                 <div>
@@ -503,7 +564,8 @@ export default function CalculadoraLanding() {
                     placeholder="seu@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-300 transition-shadow"
+                    disabled={loading}
+                    className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-300 transition-shadow disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
                   />
                 </div>
               </div>
@@ -519,32 +581,36 @@ export default function CalculadoraLanding() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label
-                    htmlFor="valorMedio"
-                    className="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5"
-                  >
-                    Média por Pedágio (R$)
-                  </label>
-                  <input
-                    id="valorMedio"
-                    type="text"
-                    value={valorMedio}
-                    onChange={(e) => setValorMedio(e.target.value)}
-                    className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-300 transition-shadow"
-                  />
-                </div>
-                <div>
-                  <label
                     htmlFor="pedagiosPorMes"
                     className="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5"
                   >
-                    Qtd. de Passagens
+                    Passagens de Pedágio
                   </label>
                   <input
                     id="pedagiosPorMes"
                     type="number"
+                    min="0"
                     value={pedagiosPorMes}
                     onChange={(e) => setPedagiosPorMes(e.target.value)}
-                    className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-300 transition-shadow"
+                    disabled={loading}
+                    className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-300 transition-shadow disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="estacionamentosPorMes"
+                    className="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5"
+                  >
+                    Passagens de Estacionamento
+                  </label>
+                  <input
+                    id="estacionamentosPorMes"
+                    type="number"
+                    min="0"
+                    value={estacionamentosPorMes}
+                    onChange={(e) => setEstacionamentosPorMes(e.target.value)}
+                    disabled={loading}
+                    className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-300 transition-shadow disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
                   />
                 </div>
               </div>
