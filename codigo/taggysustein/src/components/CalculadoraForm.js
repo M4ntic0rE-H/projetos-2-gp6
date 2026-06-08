@@ -22,25 +22,22 @@ export default function CalculadoraForm({ onCalculateSuccess, onClose }) {
     onCalculateSuccess(null);
 
     try {
-      const response = await fetch(
-        "http://localhost:8080/api/v1/calculo/impacto",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            nomeCompleto,
-            email,
-            marcaVeiculo,
-            modeloVeiculo,
-            anoVeiculo: Number(anoVeiculo),
-            totalPassagensPedagio: Number(totalPassagensPedagio),
-            totalPassagensEstacionamento: Number(totalPassagensEstacionamento),
-            fuelType,
-          }),
+      const response = await fetch("http://localhost:8080/api/v1/calculo/b2c", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          nomeCompleto,
+          email,
+          marcaVeiculo,
+          modeloVeiculo,
+          anoVeiculo: Number(anoVeiculo),
+          totalPassagensPedagio: Number(totalPassagensPedagio),
+          totalPassagensEstacionamento: Number(totalPassagensEstacionamento),
+          fuelType,
+        }),
+      });
 
       if (!response.ok) throw new Error("Erro na resposta do servidor.");
 

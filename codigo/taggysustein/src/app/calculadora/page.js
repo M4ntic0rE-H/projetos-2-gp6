@@ -7,7 +7,7 @@ import BotaoFlutuanteCalculadora from "@/components/BotaoFlutuanteCalculadora";
 
 export default function CalculadoraPage() {
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
-  const [resultado, setResultado] = useState(null);
+  const [resultado, setResultado] = useState(null); //objeto que contém a resposta do backend
 
   const handleOpenCalculator = () => setIsCalculatorOpen(true);
   const handleCloseCalculator = () => setIsCalculatorOpen(false);

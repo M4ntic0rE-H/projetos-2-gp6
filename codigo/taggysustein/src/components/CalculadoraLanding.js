@@ -16,9 +16,9 @@ import SearchableSelect from "./SearchableSelect";
 
 export default function CalculadoraLanding() {
   const containerRef = useRef(null);
-  const [pedagiosPorMes, setPedagiosPorMes] = useState("40");
+  const [pedagiosPorMes, setPedagiosPorMes] = useState("0");
   const [estacionamentosPorMes, setEstacionamentosPorMes] = useState("0");
-  const [fuelType, setFuelType] = useState("GASOLINE");
+  const [fuelType, setFuelType] = useState("GASOLINA");
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
 
@@ -84,19 +84,13 @@ export default function CalculadoraLanding() {
         totalPassagensPedagio: parseInt(pedagiosPorMes) || 0,
         totalPassagensEstacionamento: parseInt(estacionamentosPorMes) || 0,
         fuelType: fuelType,
-        gramasPapelEvitados: 0.0,
-        tempoGanhoSegundos: 0,
-        litrosCombustivelEvitados: 0.0,
       };
 
-      const response = await fetch(
-        "http://127.0.0.1:8080/api/v1/calculo/impacto-simplificado",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        },
-      );
+      const response = await fetch("http://127.0.0.1:8080/api/v1/calculo/b2c", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
       if (!response.ok) {
         let errorText = await response.text();
@@ -525,7 +519,7 @@ export default function CalculadoraLanding() {
                     disabled={loading}
                     className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-300 transition-shadow cursor-pointer disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
                   >
-                    <option value="GASOLINE">Gasolina</option>
+                    <option value="GASOLINA">Gasolina</option>
                     <option value="DIESEL">Diesel</option>
                   </select>
                 </div>
