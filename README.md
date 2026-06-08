@@ -99,7 +99,7 @@ Abaixo, detalhamos o cronograma planejado para as Sprints do projeto:
 <table>
   <tr>
     <td align="center" valign="top" width="50%">
-      <img src="Imgs/jirasprint1.3.JPG" alt="Sprint atual para comprovação de cronograma" width="440" />
+      <img src="Imgs/jirasprint1.4.JPG" alt="Sprint atual para comprovação de cronograma" width="440" />
     </td>
   </tr>
 </table>
@@ -129,6 +129,20 @@ Delay em definição de Spike de Cálculos
 > Status: Consertado
 <img src="Imgs/SpikeCalculoConclusãoValidation.png" alt="Imagem most" width="440" />
 
+- issue 04
+Tooltip de exposição de funcionamento interno do sistema
+> Status: Não Concluido
+<img src="Imgs/IssueTooltipTS.JPG" alt="Imagem most" width="440" />
+
+- issue 05
+Definição clara de pontos do cálculo pelas tooltips, documentando fontes para variáveis e conversões
+> Status: Não Concluido
+<img src="Imgs/IssueTooltipExposureTS.JPG" alt="Imagem most" width="440" />
+
+- issue 06
+Falta do ambiente do Back-End para relatório de emissão e opção de export
+> Status: Não Concluido
+<img src="Imgs/IssueRelatorioExport.JPG" alt="Imagem most" width="440" />
 
 
 ### Testes de Sistema
