@@ -146,6 +146,7 @@ export default function FormularioLogin() {
 
       if (response.ok) {
         const userId = await response.text();
+        console.log("ID retornado pelo backend:", userId);
         
         const namePart = email.split("@")[0];
         let formattedName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
