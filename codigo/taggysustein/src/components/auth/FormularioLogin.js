@@ -128,6 +128,9 @@ export default function FormularioLogin() {
     setLoading(true);
 
     try {
+      const payload = { email, senha };
+      console.log("Enviando requisição de login para o backend:", payload);
+
       const response = await fetch(
         "http://127.0.0.1:8080/api/v1/usuario/login",
         {
@@ -135,45 +138,32 @@ export default function FormularioLogin() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, senha }),
+          body: JSON.stringify(payload),
         },
       );
 
-      if (response.ok) {
-        const userData = await response.json();
-        const backendName =
-          userData.nome ||
-          userData.nomeUsuario ||
-          userData.userName ||
-          userData.login;
+      console.log("Status da resposta do backend:", response.status);
 
-        let finalName = backendName;
-        if (!finalName) {
-          const namePart = email.split("@")[0];
-          let formattedName =
-            namePart.charAt(0).toUpperCase() + namePart.slice(1);
+      if (response.ok) { //status ok
+        const userData = await response.json(); 
+        const userId = userData.userId; // extraindo o ID do JSON retornado
+        console.log("ID retornado pelo backend:", userId);
 
-          if (formattedName.toLowerCase().startsWith("usuario")) {
-            formattedName = formattedName.substring(7);
-            formattedName =
-              formattedName.charAt(0).toUpperCase() + formattedName.slice(1);
-          }
-          finalName = formattedName;
+        const namePart = email.split("@")[0];
+        let formattedName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
+
+        localStorage.setItem("userName", formattedName);
+        localStorage.setItem("userId", userId);
+
+        try {
+          await fetch(`http://127.0.0.1:8080/api/calculos/b2b/usuario/${userId}?mes=2024-06`);
+        } catch (calcError) {
+          console.error("Erro ao carregar cálculos", calcError);
         }
-        
-        localStorage.setItem("userName", finalName);
-        if (userData.userId) {
-          localStorage.setItem("userId", userData.userId);
-        }
-        
+
         router.push("/dashboard");
       } else {
-        try {
-          const errorData = await response.json();
-          setErro(errorData.message || "E-mail ou senha inválidos.");
-        } catch (parseError) {
-          setErro("E-mail ou senha inválidos.");
-        }
+        setErro("E-mail ou senha inválidos.");
       }
     } catch (err) {
       console.error("Backend indisponível.", err);
