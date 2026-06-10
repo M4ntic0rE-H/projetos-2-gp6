@@ -395,58 +395,23 @@ export default function LayoutPainel({ onOpenExportModal, onOpenCalculator }) {
 
           </div>
 
-          <div className="relative mt-auto">
-            <div
+          <div className="relative mt-auto flex justify-center">
+            <button
               onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-              className="bg-white border border-gray-200 rounded-xl p-3 flex items-center gap-3 shadow-sm cursor-pointer hover:border-[#065f46]/30 transition-colors group"
+              className="w-10 h-10 rounded-full bg-emerald-50 overflow-hidden border border-emerald-100 cursor-pointer hover:border-[#065f46]/50 transition-colors shadow-sm focus:outline-none"
             >
-              <div className="w-8 h-8 rounded-full bg-emerald-50 overflow-hidden border border-emerald-100">
-                <img
-                  src={`https://ui-avatars.com/api/?name=${encodeURIComponent(displayUserName)}&background=065f46&color=fff`}
-                  alt="Avatar"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="text-sm font-semibold text-gray-900 truncate">
-                  {displayUserName}
-                </div>
-                <div className="text-[11px] text-[#065f46] font-medium truncate">
-                  Plano Essencial
-                </div>
-              </div>
-              <ChevronDown
-                className={`w-4 h-4 text-gray-400 transition-transform ${isUserMenuOpen ? "rotate-180" : ""}`}
+              <img
+                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(displayUserName)}&background=065f46&color=fff`}
+                alt="Avatar"
+                className="w-full h-full object-cover"
               />
-            </div>
+            </button>
 
             {isUserMenuOpen && (
-              <div className="absolute bottom-[calc(100%+8px)] left-0 w-full bg-white border border-gray-200 rounded-xl shadow-lg p-2 z-50 animate-in fade-in slide-in-from-bottom-2 duration-200">
-                <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest px-2 pb-2 mb-2 border-b border-gray-100">
-                  Trocar Conta
-                </div>
-                <button
-                  onClick={() => handleSelectUser("Camila")}
-                  className={`w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors ${userName.toLowerCase() === "camila" ? "bg-emerald-50 text-[#065f46]" : "text-gray-700 hover:bg-gray-50"}`}
-                >
-                  Camila (B2C)
-                  {userName.toLowerCase() === "camila" && (
-                    <CheckCircle2 className="w-4 h-4" />
-                  )}
-                </button>
-                <button
-                  onClick={() => handleSelectUser("Helena")}
-                  className={`w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors mt-1 ${userName.toLowerCase() === "helena" ? "bg-emerald-50 text-[#065f46]" : "text-gray-700 hover:bg-gray-50"}`}
-                >
-                  Helena (B2B)
-                  {userName.toLowerCase() === "helena" && (
-                    <CheckCircle2 className="w-4 h-4" />
-                  )}
-                </button>
-                <div className="my-1 border-t border-gray-100"></div>
+              <div className="absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 w-36 bg-white border border-gray-200 rounded-xl shadow-lg p-2 z-50 animate-in fade-in slide-in-from-bottom-2 duration-200">
                 <button
                   onClick={() => (window.location.href = "/")}
-                  className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors text-red-600 hover:bg-red-50"
+                  className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors text-red-600 hover:bg-red-50"
                 >
                   <LogOut className="w-4 h-4" />
                   Sair
