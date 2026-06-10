@@ -392,8 +392,8 @@ export default function FormularioLogin() {
             </div>
           </div>
 
-          <div ref={statsRef} className="grid grid-cols-3 gap-2 text-center">
-            <div className="bg-emerald-50/50 rounded-xl p-2 border border-emerald-100/50">
+          <div ref={statsRef} className="grid grid-cols-2 gap-2 text-center">
+            <div className="bg-emerald-50/50 rounded-xl p-3 border border-emerald-100/50">
               <div className="text-[9px] text-gray-500 font-medium mb-0.5">
                 CO₂ Evitado
               </div>
@@ -402,7 +402,7 @@ export default function FormularioLogin() {
               </div>
             </div>
 
-            <div className="bg-gray-50 rounded-xl p-2 border border-gray-200/40">
+            <div className="bg-gray-50 rounded-xl p-3 border border-gray-200/40">
               <div className="text-[9px] text-gray-500 font-medium mb-0.5">
                 Tempo Salvo
               </div>
