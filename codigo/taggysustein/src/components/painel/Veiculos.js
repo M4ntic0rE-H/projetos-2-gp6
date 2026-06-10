@@ -152,22 +152,26 @@ export default function Veiculos({ userName }) {
                 return true;
               });
 
-              apiVehicles = unique.map((item, idx) => ({
-                id: idx + 1,
-                // Para B2C (1 veículo): usa a marca do localStorage (mais confiável)
-                // Para B2B (múltiplos): tenta extrair do veiculoInfo
-                marca: unique.length === 1 && localV?.marca
-                  ? localV.marca
-                  : (item.veiculoInfo || "").split(" ")[0] || "—",
-                model: unique.length === 1 && localV
-                  ? `${localV.marca} ${localV.modelo}`
-                  : item.veiculoInfo || "Veículo",
-                year: unique.length === 1 && localV?.ano
-                  ? parseInt(localV.ano)
-                  : "—",
-                status: "Ativo",
-                type: "Sedan",
-              }));
+              apiVehicles = unique.map((item, idx) => {
+                // Tenta extrair o ano do localStorage (campo "ano" salvo pelo simulador)
+                const rawAno = localV?.ano;
+                const parsedAno = rawAno && !isNaN(parseInt(rawAno)) && parseInt(rawAno) > 1900
+                  ? parseInt(rawAno)
+                  : null;
+
+                return {
+                  id: idx + 1,
+                  marca: unique.length === 1 && localV?.marca
+                    ? localV.marca
+                    : (item.veiculoInfo || "").split(" ")[0] || "—",
+                  model: unique.length === 1 && localV
+                    ? `${localV.marca} ${localV.modelo}`
+                    : item.veiculoInfo || "Veículo",
+                  year: unique.length === 1 && parsedAno ? parsedAno : "—",
+                  status: "Ativo",
+                  type: "Sedan",
+                };
+              });
               break;
             }
           }
@@ -574,7 +578,7 @@ export default function Veiculos({ userName }) {
                     Marca: <strong className="text-gray-900">{v.marca || "—"}</strong>
                   </span>
                   <span>
-                    Ano: <strong className="text-gray-900">{v.year}</strong>
+                    Ano: <strong className="text-gray-900">{v.year || "—"}</strong>
                   </span>
                 </div>
               </div>
@@ -643,7 +647,7 @@ export default function Veiculos({ userName }) {
                       </span>
                     </td>
                     <td className="py-4 px-6 text-sm text-gray-500">
-                      {v.year} <span className="mx-1">•</span> {v.type}
+                      {v.year || "—"} <span className="mx-1">•</span> {v.type}
                     </td>
                     <td className="py-4 px-6">
                       <span
