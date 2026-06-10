@@ -411,14 +411,6 @@ export default function FormularioLogin() {
               </div>
             </div>
 
-            <div className="bg-emerald-50/50 rounded-xl p-2 border border-emerald-100/50">
-              <div className="text-[9px] text-gray-500 font-medium mb-0.5">
-                Cashback
-              </div>
-              <div className="text-xs font-bold text-emerald-700">
-                {routes[routeIndex].cashback}
-              </div>
-            </div>
           </div>
         </div>
       </div>
