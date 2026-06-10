@@ -21,7 +21,7 @@ export default function RelatorioImpacto({ userName }) {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
 
-  const [selectedMonth, setSelectedMonth] = useState("2026-03");
+  const [selectedMonth, setSelectedMonth] = useState("2026-06");
   const containerRef = useRef(null);
 
 
@@ -42,8 +42,10 @@ export default function RelatorioImpacto({ userName }) {
       }
 
       if (Array.isArray(b2bResult) && b2bResult.length > 0) {
+        console.log("Relatório B2B Sucesso! Recebidos:", b2bResult.length, "veículos");
         setData(b2bResult);
       } else {
+        console.warn("Relatório B2B retornou vazio ou erro. Status:", response.status, "b2bResult:", b2bResult);
         // Fallback: Tenta usar o veículo salvo no localStorage e chama o endpoint B2C
         const storedVehicle = localStorage.getItem("userVehicle");
         if (storedVehicle) {

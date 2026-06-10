@@ -42,7 +42,7 @@ export default function LayoutPainel({ onOpenExportModal, onOpenCalculator }) {
 
   const [backendData, setBackendData] = useState([]);
   const [loadingBackend, setLoadingBackend] = useState(true);
-  const [selectedMonth, setSelectedMonth] = useState("2026-03");
+  const [selectedMonth, setSelectedMonth] = useState("2026-06");
 
   const displayUserName = userName.toLowerCase().startsWith("usuario")
     ? userName.substring(7).charAt(0).toUpperCase() +

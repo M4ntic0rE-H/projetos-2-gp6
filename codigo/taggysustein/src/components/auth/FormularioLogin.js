@@ -153,16 +153,16 @@ export default function FormularioLogin() {
       console.log("Status da resposta do backend:", response.status);
 
       if (response.ok) { //status ok
-        const userData = await response.json(); 
-        const userId = userData.userId; // extraindo o ID do JSON retornado
+        const userData = await response.json();
+
+        let userId = userData.userId || userData.id || userData.usuarioId || userData.idPessoa; // Tenta pegar o ID de onde for possível
         console.log("ID retornado pelo backend:", userId);
 
-        // Usa o nome completo do cadastro (calculadora) se disponível
         const pendingNome = localStorage.getItem("pendingNome");
-        const namePart = email.split("@")[0];
-        const formattedName = pendingNome
-          ? pendingNome
-          : namePart.charAt(0).toUpperCase() + namePart.slice(1);
+        const rawName = userData.nome || userData.name || pendingNome || email.split("@")[0];
+
+        const firstName = rawName.split(/[.\-_ ]/)[0];
+        const formattedName = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
 
         localStorage.setItem("userName", formattedName);
         localStorage.setItem("userId", userId);
