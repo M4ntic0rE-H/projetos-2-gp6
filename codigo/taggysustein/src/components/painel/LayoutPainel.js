@@ -395,29 +395,28 @@ export default function LayoutPainel({ onOpenExportModal, onOpenCalculator }) {
 
           </div>
 
-          <div className="relative mt-auto flex justify-center">
-            <button
-              onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-              className="w-10 h-10 rounded-full bg-emerald-50 overflow-hidden border border-emerald-100 cursor-pointer hover:border-[#065f46]/50 transition-colors shadow-sm focus:outline-none"
-            >
-              <img
-                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(displayUserName)}&background=065f46&color=fff`}
-                alt="Avatar"
-                className="w-full h-full object-cover"
-              />
-            </button>
-
-            {isUserMenuOpen && (
-              <div className="absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 w-36 bg-white border border-gray-200 rounded-xl shadow-lg p-2 z-50 animate-in fade-in slide-in-from-bottom-2 duration-200">
-                <button
-                  onClick={() => (window.location.href = "/")}
-                  className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors text-red-600 hover:bg-red-50"
-                >
-                  <LogOut className="w-4 h-4" />
-                  Sair
-                </button>
+          <div className="mt-auto pt-4 pb-2 border-t border-gray-100">
+            <div className="flex items-center justify-between px-2">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-emerald-50 overflow-hidden border border-emerald-100 shrink-0">
+                  <img
+                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(displayUserName)}&background=065f46&color=fff`}
+                    alt="Avatar"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="text-sm font-bold text-gray-900 truncate max-w-[100px]">
+                  {displayUserName}
+                </div>
               </div>
-            )}
+              <button
+                onClick={() => (window.location.href = "/")}
+                className="p-2 text-gray-400 hover:text-red-600 transition-colors rounded-lg hover:bg-red-50 shrink-0"
+                title="Sair"
+              >
+                <LogOut className="w-5 h-5" />
+              </button>
+            </div>
           </div>
         </nav>
 
@@ -436,21 +435,6 @@ export default function LayoutPainel({ onOpenExportModal, onOpenCalculator }) {
                 </span>
                 <span className="mx-2">{">"}</span>
                 <span className="text-[#065f46] font-semibold">Visão Geral</span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 md:gap-6">
-
-
-              <div className="flex items-center gap-4 text-gray-400">
-
-                <div className="w-6 h-6 rounded-full overflow-hidden cursor-pointer ml-1 border border-emerald-200">
-                  <img
-                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(displayUserName)}&background=065f46&color=fff`}
-                    alt="Avatar"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
               </div>
             </div>
           </header>
