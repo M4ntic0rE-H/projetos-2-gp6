@@ -49,10 +49,47 @@ export default function LayoutPainel({ onOpenExportModal, onOpenCalculator }) {
     userName.substring(7).slice(1)
     : userName;
 
+  const fetchUserName = async (userId) => {
+    try {
+      let data = null;
+      // Tenta a rota de usuário primeiro
+      let res = await fetch(`/api/v1/usuario/${userId}`);
+      if (res.ok) {
+        data = await res.json();
+      } else {
+        // Se falhar, tenta a rota de pessoa
+        res = await fetch(`/api/v1/pessoa/${userId}`);
+        if (res.ok) data = await res.json();
+      }
+
+      if (data) {
+        const rawName = data.nome || data.name || data.nomeCompleto;
+        if (rawName) {
+          const firstName = rawName.split(/[.\-_ ]/)[0];
+          const formattedName = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
+          setUserName(formattedName);
+          localStorage.setItem("userName", formattedName);
+        }
+      }
+    } catch (err) {
+      console.error("Erro ao buscar nome na tabela pessoa/usuario", err);
+    }
+  };
+
   useEffect(() => {
     const savedName = localStorage.getItem("userName");
-    if (savedName) setUserName(savedName);
-    else setUserName("Usuário"); // Fallback inicial
+    const userId = localStorage.getItem("userId");
+
+    if (savedName && !savedName.includes("@")) {
+      setUserName(savedName);
+    } else {
+      setUserName("Usuário"); // Fallback inicial
+    }
+
+    // Busca o nome real no backend caso exista o ID
+    if (userId) {
+      fetchUserName(userId);
+    }
   }, []);
 
   const handleSelectUser = (newName) => {
