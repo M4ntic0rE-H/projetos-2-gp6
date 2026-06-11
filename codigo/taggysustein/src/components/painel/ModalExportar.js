@@ -158,7 +158,7 @@ export default function ModalExportar({ isOpen, onClose, data, userName }) {
 
               {/* Histórico Recente (Limited for print) */}
               <div>
-                <h2 className="text-lg font-bold text-gray-800 mb-4 uppercase text-sm tracking-wider border-b border-gray-100 pb-2">Últimas Transações Registradas</h2>
+                <h2 className="text-lg font-bold text-gray-800 mb-4 uppercase text-sm tracking-wider border-b border-gray-100 pb-2">Carros Cadastrados</h2>
                 <table className="w-full text-left text-sm">
                   <thead>
                     <tr className="border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase">

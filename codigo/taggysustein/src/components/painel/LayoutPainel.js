@@ -112,7 +112,30 @@ export default function LayoutPainel({ onOpenExportModal, onOpenCalculator }) {
       );
 
       let b2bResult = [];
-      if (response.ok) {
+      
+      // MOCK PARA APRESENTAÇÃO: Força dados de 3 veículos para a Helena (B2B) ignorando o backend
+      if (userName && userName.toLowerCase().includes("helena")) {
+        b2bResult = [
+          {
+            veiculoInfo: "Corolla",
+            cenarioComTaggy: { gramasCo2Emitidos: 634.25, litrosCombustivelConsumidos: 0.27, gramasPapelUtilizados: 0 },
+            cenarioSemTaggy: { gramasCo2Emitidos: 2311.85, litrosCombustivelConsumidos: 0.99, gramasPapelUtilizados: 14.0 },
+            ganhos: { gramasCo2Evitados: 1677.6, litrosCombustivelEvitados: 0.72, gramasPapelEvitados: 14.0, tempoGanhoSegundos: 3600 }
+          },
+          {
+            veiculoInfo: "Civic",
+            cenarioComTaggy: { gramasCo2Emitidos: 267.32, litrosCombustivelConsumidos: 0.11, gramasPapelUtilizados: 0 },
+            cenarioSemTaggy: { gramasCo2Emitidos: 981.98, litrosCombustivelConsumidos: 0.42, gramasPapelUtilizados: 6.0 },
+            ganhos: { gramasCo2Evitados: 714.66, litrosCombustivelEvitados: 0.31, gramasPapelEvitados: 6.0, tempoGanhoSegundos: 1800 }
+          },
+          {
+            veiculoInfo: "Compass",
+            cenarioComTaggy: { gramasCo2Emitidos: 1422.2, litrosCombustivelConsumidos: 0.53, gramasPapelUtilizados: 0 },
+            cenarioSemTaggy: { gramasCo2Emitidos: 5195.0, litrosCombustivelConsumidos: 1.97, gramasPapelUtilizados: 28.0 },
+            ganhos: { gramasCo2Evitados: 3772.8, litrosCombustivelEvitados: 1.44, gramasPapelEvitados: 28.0, tempoGanhoSegundos: 7200 }
+          }
+        ];
+      } else if (response.ok) {
         b2bResult = await response.json();
       }
 
@@ -710,12 +733,12 @@ export default function LayoutPainel({ onOpenExportModal, onOpenCalculator }) {
                     <div className="flex justify-between items-start md:items-center mb-5 flex-col md:flex-row gap-4 md:gap-0">
                       <div className="flex items-center gap-2">
                         <h3 className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">
-                          HISTÓRICO RECENTE
+                          CARROS CADASTRADOS
                         </h3>
                         <div className="w-4 h-4 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 text-[10px] relative group cursor-help">
                           ?
                           <div className="absolute bottom-full left-0 mb-2 w-max max-w-[200px] bg-gray-800 text-white text-[10px] p-2 rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all shadow-lg z-20 font-normal normal-case tracking-normal text-left">
-                            Últimas transações registradas.
+                            Lista de carros cadastrados.
                             <div className="absolute top-full left-1.5 border-4 border-transparent border-t-gray-800"></div>
                           </div>
                         </div>

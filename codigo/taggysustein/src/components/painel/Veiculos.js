@@ -137,6 +137,18 @@ export default function Veiculos({ userName }) {
         months.push(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`);
       }
 
+      // MOCK PARA APRESENTAÇÃO: Força a lista de veículos para a Helena (B2B)
+      if (userName && userName.toLowerCase().includes("helena")) {
+        return {
+          role: "B2B",
+          vehicles: [
+            { id: 1, marca: "Toyota", model: "Toyota Corolla", year: 2022, status: "Ativo", type: "Sedan" },
+            { id: 2, marca: "Honda", model: "Honda Civic", year: 2021, status: "Ativo", type: "Sedan" },
+            { id: 3, marca: "Jeep", model: "Jeep Compass", year: 2023, status: "Ativo", type: "SUV" },
+          ]
+        };
+      }
+
       let apiVehicles = [];
       for (const month of months) {
         try {

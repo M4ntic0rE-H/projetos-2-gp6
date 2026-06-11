@@ -537,7 +537,7 @@ export default function Simulador() {
                   Veículo
                 </h3>
               </div>
-              <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <SearchableSelect
                   label="Marca"
                   placeholder="Selecione a marca..."
@@ -563,7 +563,7 @@ export default function Simulador() {
                   }
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <SearchableSelect
                   label="Ano"
                   placeholder="Selecione o ano..."
@@ -782,9 +782,9 @@ export default function Simulador() {
                   <p className="text-[11px] mt-1 font-medium
                     text-gray-500">
                     {
-                      senha.length < 6 ? "⚠️ Muito curta"
-                        : senha.length >= 10 && /[A-Z]/.test(senha) && /[0-9]/.test(senha) ? "✅ Forte"
-                          : senha.length >= 8 && /[0-9]/.test(senha) ? "🟡 Boa"
+                      senha.length < 6 ? "Muito curta"
+                        : senha.length >= 10 && /[A-Z]/.test(senha) && /[0-9]/.test(senha) ? "Forte"
+                          : senha.length >= 8 && /[0-9]/.test(senha) ? "Boa"
                             : "🟠 Razoável"
                     }
                   </p>
@@ -809,10 +809,10 @@ export default function Simulador() {
                     }`}
                 />
                 {senhaConfirmacao && senhaConfirmacao !== senha && (
-                  <p className="text-[11px] text-red-500 mt-1 font-medium">❌ As senhas não conferem</p>
+                  <p className="text-[11px] text-red-500 mt-1 font-medium">As senhas não conferem</p>
                 )}
                 {senhaConfirmacao && senhaConfirmacao === senha && (
-                  <p className="text-[11px] text-emerald-600 mt-1 font-medium">✅ Senhas conferem</p>
+                  <p className="text-[11px] text-emerald-600 mt-1 font-medium">Senhas conferem</p>
                 )}
               </div>
             </div>
