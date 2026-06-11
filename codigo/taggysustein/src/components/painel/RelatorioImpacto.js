@@ -29,83 +29,25 @@ export default function RelatorioImpacto({ userName }) {
     setLoading(true);
     setError(null);
     try {
-      const storedId = localStorage.getItem("userId");
-      const userId = storedId ? storedId : 1;
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        setData([]);
+        setLoading(false);
+        return;
+      }
 
       const response = await fetch(
         `/api/calculos/b2b/usuario/${userId}?mes=${month}`,
       );
 
-      let b2bResult = [];
-      if (response.ok) {
-        b2bResult = await response.json();
-      }
-
-      if (Array.isArray(b2bResult) && b2bResult.length > 0) {
-        console.log("Relatório B2B Sucesso! Recebidos:", b2bResult.length, "veículos");
-        setData(b2bResult);
-      } else {
-        console.warn("Relatório B2B retornou vazio ou erro. Status:", response.status, "b2bResult:", b2bResult);
-        // Fallback: Tenta usar o veículo salvo no localStorage e chama o endpoint B2C
-        const storedVehicle = localStorage.getItem("userVehicle");
-        if (storedVehicle) {
-          const localV = JSON.parse(storedVehicle);
-          
-          const payload = {
-            nomeCompleto: userName || "Usuário",
-            email: "usuario@email.com",
-            marcaVeiculo: localV.marca || "Marca",
-            modeloVeiculo: localV.modelo || "Modelo",
-            anoVeiculo: localV.ano || "2020",
-            totalPassagensPedagio: localV.pedagios || 10,
-            totalPassagensEstacionamento: localV.estacionamentos || 5,
-            fuelType: localV.fuelType || "GASOLINA",
-          };
-
-          const b2cResponse = await fetch("/api/v1/calculo/impacto-simplificado", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          });
-
-          if (b2cResponse.ok) {
-            const b2cData = await b2cResponse.json();
-            
-            // Simula a estrutura B2B a partir dos ganhos do B2C (assumindo ~15% de redução)
-            const co2Evitado = b2cData.gramasCo2Evitados || 0;
-            const combEvitado = b2cData.litrosCombustivelEvitados || 0;
-            const papelEvitado = b2cData.gramasPapelEvitados || 0;
-
-            const co2Sem = co2Evitado > 0 ? co2Evitado / 0.15 : 0;
-            const combSem = combEvitado > 0 ? combEvitado / 0.15 : 0;
-
-            setData([
-              {
-                veiculoInfo: `${localV.marca} ${localV.modelo}`,
-                cenarioSemTaggy: {
-                  gramasCo2Emitidos: co2Sem,
-                  litrosCombustivelConsumidos: combSem,
-                  gramasPapelUtilizados: papelEvitado
-                },
-                cenarioComTaggy: {
-                  gramasCo2Emitidos: co2Sem - co2Evitado,
-                  litrosCombustivelConsumidos: combSem - combEvitado,
-                  gramasPapelUtilizados: 0
-                },
-                ganhos: {
-                  gramasCo2Evitados: co2Evitado,
-                  arvoresEquivalentes: b2cData.arvoresEquivalentes || 0,
-                  litrosCombustivelEvitados: combEvitado,
-                  gramasPapelEvitados: papelEvitado,
-                  tempoGanhoSegundos: b2cData.tempoGanhoSegundos || 0
-                }
-              }
-            ]);
-            return;
-          }
-        }
+      if (!response.ok) {
         setData([]);
+        return;
       }
+
+      const result = await response.json();
+      const veiculos = Array.isArray(result) ? result : [];
+      setData(veiculos);
     } catch (err) {
       console.error("API indisponível.", err);
       setData([]);
@@ -201,11 +143,19 @@ export default function RelatorioImpacto({ userName }) {
                     <Car className="w-5 h-5" />
                   </div>
                   <div>
-                    <div className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-0.5">
-                      Veículo
-                    </div>
                     <div className="text-base font-bold text-gray-900 break-words">
-                      {item.veiculoInfo}
+                      {item.modelo || item.veiculoInfo || "—"}
+                    </div>
+                    <div className="flex items-center gap-3 mt-1">
+                      <span className="text-xs text-gray-500">
+                        <span className="font-semibold text-gray-400 uppercase tracking-wider text-[10px]">Marca </span>
+                        {item.marca || (item.veiculoInfo || "").split(" ")[0] || "—"}
+                      </span>
+                      <span className="text-gray-300">·</span>
+                      <span className="text-xs text-gray-500">
+                        <span className="font-semibold text-gray-400 uppercase tracking-wider text-[10px]">Ano </span>
+                        {item.ano || "—"}
+                      </span>
                     </div>
                   </div>
                 </div>

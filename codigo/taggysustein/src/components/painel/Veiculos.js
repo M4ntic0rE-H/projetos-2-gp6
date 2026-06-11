@@ -41,14 +41,14 @@ export default function Veiculos({ userName }) {
     if (!formPlaca || !modeloNome || !anoNome) return;
     setIsSubmitting(true);
 
-    const isHelena = userName.toLowerCase().includes("helena");
+    const userEmail = localStorage.getItem("userEmail") || "";
 
     const payload = {
-      email: isHelena ? "helena.b2b@edenred.com" : "camila.b2c@gmail.com",
-      nome: isHelena ? "Helena" : "Camila",
-      idade: isHelena ? 42 : 30,
-      cpfCnpj: isHelena ? "00111222000133" : "00222333000144",
-      senha: isHelena ? "senha456" : "senha123",
+      email: userEmail,
+      nome: userName,
+      idade: null,
+      cpfCnpj: null,
+      senha: null,
       veiculos: [
         {
           placa: formPlaca,
@@ -119,100 +119,48 @@ export default function Veiculos({ userName }) {
     }
   };
 
-  // Busca veículos reais do backend, com fallback no localStorage
   const fetchVehicles = async () => {
     try {
-      const storedId = localStorage.getItem("userId");
-      const userId = storedId ? storedId : 1;
+      const userId = localStorage.getItem("userId");
+      if (!userId) return { role: "B2C", vehicles: [] };
 
-      // Marca salva pela calculadora (fonte mais confiável para B2C)
-      const storedVehicle = localStorage.getItem("userVehicle");
-      const localV = storedVehicle ? JSON.parse(storedVehicle) : null;
-
-      // Tenta os últimos 6 meses para encontrar dados
-      const months = [];
       const now = new Date();
+      const months = [];
       for (let i = 0; i < 6; i++) {
         const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
         months.push(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`);
       }
 
-      // MOCK PARA APRESENTAÇÃO: Força a lista de veículos para a Helena (B2B)
-      if (userName && userName.toLowerCase().includes("helena")) {
-        return {
-          role: "B2B",
-          vehicles: [
-            { id: 1, marca: "Toyota", model: "Toyota Corolla", year: 2022, status: "Ativo", type: "Sedan" },
-            { id: 2, marca: "Honda", model: "Honda Civic", year: 2021, status: "Ativo", type: "Sedan" },
-            { id: 3, marca: "Jeep", model: "Jeep Compass", year: 2023, status: "Ativo", type: "SUV" },
-          ]
-        };
-      }
-
-      let apiVehicles = [];
       for (const month of months) {
         try {
           const response = await fetch(`/api/calculos/b2b/usuario/${userId}?mes=${month}`);
-          if (response.ok) {
-            const result = await response.json();
-            if (Array.isArray(result) && result.length > 0) {
-              // Extrai veículos únicos pelo veiculoInfo
-              const seen = new Set();
-              const unique = result.filter((item) => {
-                if (seen.has(item.veiculoInfo)) return false;
-                seen.add(item.veiculoInfo);
-                return true;
-              });
+          if (!response.ok) continue;
 
-              apiVehicles = unique.map((item, idx) => {
-                // Tenta extrair o ano do localStorage (campo "ano" salvo pelo simulador)
-                const rawAno = localV?.ano;
-                const parsedAno = rawAno && !isNaN(parseInt(rawAno)) && parseInt(rawAno) > 1900
-                  ? parseInt(rawAno)
-                  : null;
+          const result = await response.json();
+          const items = Array.isArray(result) ? result : [];
+          if (items.length === 0) continue;
 
-                return {
-                  id: idx + 1,
-                  marca: unique.length === 1 && localV?.marca
-                    ? localV.marca
-                    : (item.veiculoInfo || "").split(" ")[0] || "—",
-                  model: unique.length === 1 && localV
-                    ? `${localV.marca} ${localV.modelo}`
-                    : item.veiculoInfo || "Veículo",
-                  year: unique.length === 1 && parsedAno ? parsedAno : "—",
-                  status: "Ativo",
-                  type: "Sedan",
-                };
-              });
-              break;
-            }
-          }
+          const seen = new Set();
+          const unique = items.filter((item) => {
+            if (seen.has(item.veiculoInfo)) return false;
+            seen.add(item.veiculoInfo);
+            return true;
+          });
+
+          const vehicles = unique.map((item, idx) => ({
+            id: idx + 1,
+            marca: item.marca || (item.veiculoInfo || "").split(" ")[0] || "—",
+            model: item.modelo || item.veiculoInfo || "—",
+            year: item.ano || "—",
+            status: "Ativo",
+            type: "Sedan",
+          }));
+
+          return {
+            role: vehicles.length > 1 ? "B2B" : "B2C",
+            vehicles,
+          };
         } catch (_) {}
-      }
-
-      if (apiVehicles.length > 0) {
-        return {
-          role: apiVehicles.length > 1 ? "B2B" : "B2C",
-          vehicles: apiVehicles,
-        };
-      }
-
-      // Fallback: veículo salvo no localStorage pela calculadora
-      if (localV) {
-        return {
-          role: "B2C",
-          vehicles: [
-            {
-              id: 1,
-              marca: localV.marca || "—",
-              model: `${localV.marca} ${localV.modelo}`,
-              year: parseInt(localV.ano) || "—",
-              status: "Ativo",
-              type: "Sedan",
-              fuelType: localV.fuelType,
-            },
-          ],
-        };
       }
 
       return { role: "B2C", vehicles: [] };

@@ -166,6 +166,7 @@ export default function FormularioLogin() {
 
         localStorage.setItem("userName", formattedName);
         localStorage.setItem("userId", userId);
+        localStorage.setItem("userEmail", email);
 
         // Limpa credenciais temporárias da calculadora
         localStorage.removeItem("pendingEmail");

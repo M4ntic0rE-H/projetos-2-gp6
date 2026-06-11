@@ -104,108 +104,28 @@ export default function LayoutPainel({ onOpenExportModal, onOpenCalculator }) {
     if (!userName) return;
     setLoadingBackend(true);
     try {
-      const storedId = localStorage.getItem("userId");
-      const userId = storedId ? storedId : 1;
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        setBackendData([]);
+        setLoadingBackend(false);
+        return;
+      }
 
       const response = await fetch(
         `/api/calculos/b2b/usuario/${userId}?mes=${month}`,
       );
 
-      let b2bResult = [];
-      
-      // MOCK PARA APRESENTAÇÃO: Força dados de 3 veículos para a Helena (B2B) ignorando o backend
-      if (userName && userName.toLowerCase().includes("helena")) {
-        b2bResult = [
-          {
-            veiculoInfo: "Corolla",
-            cenarioComTaggy: { gramasCo2Emitidos: 634.25, litrosCombustivelConsumidos: 0.27, gramasPapelUtilizados: 0 },
-            cenarioSemTaggy: { gramasCo2Emitidos: 2311.85, litrosCombustivelConsumidos: 0.99, gramasPapelUtilizados: 14.0 },
-            ganhos: { gramasCo2Evitados: 1677.6, litrosCombustivelEvitados: 0.72, gramasPapelEvitados: 14.0, tempoGanhoSegundos: 3600 }
-          },
-          {
-            veiculoInfo: "Civic",
-            cenarioComTaggy: { gramasCo2Emitidos: 267.32, litrosCombustivelConsumidos: 0.11, gramasPapelUtilizados: 0 },
-            cenarioSemTaggy: { gramasCo2Emitidos: 981.98, litrosCombustivelConsumidos: 0.42, gramasPapelUtilizados: 6.0 },
-            ganhos: { gramasCo2Evitados: 714.66, litrosCombustivelEvitados: 0.31, gramasPapelEvitados: 6.0, tempoGanhoSegundos: 1800 }
-          },
-          {
-            veiculoInfo: "Compass",
-            cenarioComTaggy: { gramasCo2Emitidos: 1422.2, litrosCombustivelConsumidos: 0.53, gramasPapelUtilizados: 0 },
-            cenarioSemTaggy: { gramasCo2Emitidos: 5195.0, litrosCombustivelConsumidos: 1.97, gramasPapelUtilizados: 28.0 },
-            ganhos: { gramasCo2Evitados: 3772.8, litrosCombustivelEvitados: 1.44, gramasPapelEvitados: 28.0, tempoGanhoSegundos: 7200 }
-          }
-        ];
-      } else if (response.ok) {
-        b2bResult = await response.json();
-      }
-
-      if (Array.isArray(b2bResult) && b2bResult.length > 0) {
-        setBackendData(b2bResult);
-        const uniqueVehicles = new Set(b2bResult.map((item) => item.veiculoInfo)).size;
-        setIsB2B(uniqueVehicles > 1);
-      } else {
-        // Fallback: Tenta usar o veículo salvo no localStorage e chama o endpoint B2C
-        const storedVehicle = localStorage.getItem("userVehicle");
-        if (storedVehicle) {
-          const localV = JSON.parse(storedVehicle);
-          
-          const payload = {
-            nomeCompleto: userName || "Usuário",
-            email: "usuario@email.com",
-            marcaVeiculo: localV.marca || "Marca",
-            modeloVeiculo: localV.modelo || "Modelo",
-            anoVeiculo: localV.ano || "2020",
-            totalPassagensPedagio: localV.pedagios || 10,
-            totalPassagensEstacionamento: localV.estacionamentos || 5,
-            fuelType: localV.fuelType || "GASOLINA",
-          };
-
-          const b2cResponse = await fetch("/api/v1/calculo/impacto-simplificado", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          });
-
-          if (b2cResponse.ok) {
-            const b2cData = await b2cResponse.json();
-            
-            // Simula a estrutura B2B a partir dos ganhos do B2C
-            const co2Evitado = b2cData.gramasCo2Evitados || 0;
-            const combEvitado = b2cData.litrosCombustivelEvitados || 0;
-            const papelEvitado = b2cData.gramasPapelEvitados || 0;
-
-            const co2Sem = co2Evitado > 0 ? co2Evitado / 0.15 : 0;
-            const combSem = combEvitado > 0 ? combEvitado / 0.15 : 0;
-
-            setBackendData([
-              {
-                veiculoInfo: `${localV.marca} ${localV.modelo}`,
-                cenarioSemTaggy: {
-                  gramasCo2Emitidos: co2Sem,
-                  litrosCombustivelConsumidos: combSem,
-                  gramasPapelUtilizados: papelEvitado
-                },
-                cenarioComTaggy: {
-                  gramasCo2Emitidos: co2Sem - co2Evitado,
-                  litrosCombustivelConsumidos: combSem - combEvitado,
-                  gramasPapelUtilizados: 0
-                },
-                ganhos: {
-                  gramasCo2Evitados: co2Evitado,
-                  arvoresEquivalentes: b2cData.arvoresEquivalentes || 0,
-                  litrosCombustivelEvitados: combEvitado,
-                  gramasPapelEvitados: papelEvitado,
-                  tempoGanhoSegundos: b2cData.tempoGanhoSegundos || 0
-                }
-              }
-            ]);
-            setIsB2B(false);
-            return;
-          }
-        }
+      if (!response.ok) {
         setBackendData([]);
         setIsB2B(false);
+        return;
       }
+
+      const result = await response.json();
+      const veiculos = Array.isArray(result) ? result : [];
+
+      setBackendData(veiculos);
+      setIsB2B(veiculos.length > 1);
     } catch (err) {
       console.error("API indisponível no dashboard.", err);
       setBackendData([]);
@@ -360,14 +280,13 @@ export default function LayoutPainel({ onOpenExportModal, onOpenCalculator }) {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       Math.min(100, Math.max(0, totalEconomiaFinanceira / 5))
     ],
-    history: backendData.map((calc, idx) => {
-      const totalEconomia = (calc.ganhos?.litrosCombustivelEvitados || 0) * 5.8 + ((calc.ganhos?.tempoGanhoSegundos || 0) / 3600) * 20;
+    history: backendData.map((calc) => {
+      const info = calc.veiculoInfo || "";
+      const parts = info.trim().split(" ");
       return {
-        id: `#${(idx + 1).toString().padStart(5, '0')}`,
-        praca: calc.veiculoInfo || "Veículo Registrado",
-        estado: "Pernambuco",
-        status: "Success",
-        ec: `R$ ${totalEconomia.toFixed(2).replace(".", ",")}`,
+        marca: calc.marca || parts[0] || "—",
+        modelo: calc.modelo || info || "—",
+        ano: calc.ano || "—",
       };
     })
   };
@@ -750,13 +669,9 @@ export default function LayoutPainel({ onOpenExportModal, onOpenCalculator }) {
                       <table className="w-full text-left">
                         <thead>
                           <tr className="border-b border-gray-100 text-[10px] font-semibold text-gray-400 uppercase tracking-widest">
-
-                            <th className="pb-3 px-2 font-medium">ID:</th>
-                            <th className="pb-3 px-2 font-medium">PRAÇA:</th>
-                            <th className="pb-3 px-2 font-medium">ESTADO:</th>
-                            <th className="pb-3 px-2 font-medium">STATUS:</th>
-
-
+                            <th className="pb-3 px-2 font-medium">MARCA</th>
+                            <th className="pb-3 px-2 font-medium">MODELO</th>
+                            <th className="pb-3 px-2 font-medium">ANO</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -765,38 +680,15 @@ export default function LayoutPainel({ onOpenExportModal, onOpenCalculator }) {
                               key={idx}
                               className="table-row-anim border-b border-gray-50 hover:bg-gray-50/50 transition-colors text-sm text-gray-600"
                             >
-
-                              <td className="py-3 px-2 font-medium text-gray-400">
-                                {row.id}
-                              </td>
                               <td className="py-3 px-2 text-gray-900 font-medium">
-                                {row.praca}
+                                {row.marca}
+                              </td>
+                              <td className="py-3 px-2 text-gray-700">
+                                {row.modelo}
                               </td>
                               <td className="py-3 px-2 text-gray-500">
-                                {row.estado}
+                                {row.ano}
                               </td>
-                              <td className="py-3 px-2">
-                                {row.status === "Success" && (
-                                  <span className="inline-flex items-center gap-1.5 text-xs font-medium text-[#065f46] bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-[#065f46]"></span>{" "}
-                                    Sucesso
-                                  </span>
-                                )}
-                                {row.status === "Pending" && (
-                                  <span className="inline-flex items-center gap-1.5 text-xs font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>{" "}
-                                    Pendente
-                                  </span>
-                                )}
-                                {row.status === "Refunded" && (
-                                  <span className="inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full border border-gray-200">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>{" "}
-                                    Reembolsado
-                                  </span>
-                                )}
-                              </td>
-
-
                             </tr>
                           ))}
                         </tbody>
