@@ -133,6 +133,11 @@ export default function FormularioLogin() {
       return;
     }
 
+    if (!email.trim().endsWith("@edenred.com")) {
+      setErro("Acesso restrito a contas corporativas @edenred.com");
+      return;
+    }
+
     setLoading(true);
 
     try {

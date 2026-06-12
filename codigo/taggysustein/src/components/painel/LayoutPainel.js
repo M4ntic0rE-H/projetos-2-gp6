@@ -281,12 +281,14 @@ export default function LayoutPainel({ onOpenExportModal, onOpenCalculator }) {
       Math.min(100, Math.max(0, totalEconomiaFinanceira / 5))
     ],
     history: backendData.map((calc) => {
-      const info = calc.veiculoInfo || "";
-      const parts = info.trim().split(" ");
+      const info = (calc.veiculoInfo || "").trim();
+      const parts = info.split(" ");
+      const lastPart = parts[parts.length - 1];
+      const hasYear = /^\d{4}$/.test(lastPart);
       return {
-        marca: calc.marca || parts[0] || "—",
-        modelo: calc.modelo || info || "—",
-        ano: calc.ano || "—",
+        marca: parts[0] || "—",
+        modelo: hasYear ? parts.slice(1, -1).join(" ") || parts[0] || "—" : parts.slice(1).join(" ") || info || "—",
+        ano: hasYear ? lastPart : "—",
       };
     })
   };

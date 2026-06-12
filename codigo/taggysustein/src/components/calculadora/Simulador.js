@@ -69,7 +69,7 @@ export default function Simulador() {
         senha: "taggy@default",
         veiculos: [
           {
-            modelo: modeloNome,
+            modelo: `${marcaNome} ${modeloNome} ${anoVeiculo}`,
             ano: anoVeiculo,
             marca: marcaNome,
             fuelType,

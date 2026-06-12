@@ -3,121 +3,15 @@
 import React, { useState, useEffect } from "react";
 import {
   Car,
-  Plus,
-  Settings,
   AlertCircle,
   CheckCircle2,
-  X,
 } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import SearchableSelect from "../ui/SearchableSelect";
 
 export default function Veiculos({ userName }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({ role: "", vehicles: [] });
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // Estados do Formulário e FIPE
-  const [formPlaca, setFormPlaca] = useState("");
-  const [formTipo, setFormTipo] = useState("Hatch");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const [marcas, setMarcas] = useState([]);
-  const [modelos, setModelos] = useState([]);
-  const [anos, setAnos] = useState([]);
-
-  const [marcaSelecionada, setMarcaSelecionada] = useState("");
-  const [modeloSelecionado, setModeloSelecionado] = useState("");
-  const [anoSelecionado, setAnoSelecionado] = useState("");
-
-  const [marcaNome, setMarcaNome] = useState("");
-  const [modeloNome, setModeloNome] = useState("");
-  const [anoNome, setAnoNome] = useState("");
-
-  const [loadingFipe, setLoadingFipe] = useState(false);
-
-  const handleSaveVehicle = async () => {
-    if (!formPlaca || !modeloNome || !anoNome) return;
-    setIsSubmitting(true);
-
-    const userEmail = localStorage.getItem("userEmail") || "";
-
-    const payload = {
-      email: userEmail,
-      nome: userName,
-      idade: null,
-      cpfCnpj: null,
-      senha: null,
-      veiculos: [
-        {
-          placa: formPlaca,
-          modelo: marcaNome ? `${marcaNome} ${modeloNome}` : modeloNome,
-          ano: anoNome === "Zero km" ? new Date().getFullYear() : parseInt(anoNome),
-          dadosCalculo: [
-            {
-              kmRodados: 1200,
-              tipoCombustivel: "GASOLINA",
-              consumoMedio: 12.5,
-              mesReferencia: "2026-03"
-            },
-            {
-              kmRodados: 1050,
-              tipoCombustivel: "GASOLINA",
-              consumoMedio: 11.8,
-              mesReferencia: "2026-02"
-            }
-          ],
-        },
-      ],
-    };
-
-    try {
-      const response = await fetch("/api/dev/seed", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (response.ok) {
-        // Atualiza a lista na tela otimisticamente
-        setData((prev) => ({
-          ...prev,
-          vehicles: [
-            ...prev.vehicles,
-            {
-              id: Date.now(),
-              plate: formPlaca,
-              model: modeloNome,
-              year: parseInt(anoNome),
-              status: "Ativo",
-              type: formTipo,
-            },
-          ],
-        }));
-
-        // Limpa o formulário e fecha o modal
-        setFormPlaca("");
-        setFormTipo("Hatch");
-        setMarcaSelecionada("");
-        setModeloSelecionado("");
-        setAnoSelecionado("");
-        setMarcaNome("");
-        setModeloNome("");
-        setAnoNome("");
-        setIsModalOpen(false);
-      } else {
-        alert("Erro ao salvar veículo no backend.");
-      }
-    } catch (error) {
-      console.error(error);
-      alert(
-        "Erro de conexão com o backend (porta 8081). O servidor Java está rodando?",
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   const fetchVehicles = async () => {
     try {
@@ -147,14 +41,20 @@ export default function Veiculos({ userName }) {
             return true;
           });
 
-          const vehicles = unique.map((item, idx) => ({
-            id: idx + 1,
-            marca: item.marca || (item.veiculoInfo || "").split(" ")[0] || "—",
-            model: item.modelo || item.veiculoInfo || "—",
-            year: item.ano || "—",
-            status: "Ativo",
-            type: "Sedan",
-          }));
+          const vehicles = unique.map((item, idx) => {
+            const info = (item.veiculoInfo || "").trim();
+            const parts = info.split(" ");
+            const lastPart = parts[parts.length - 1];
+            const hasYear = /^\d{4}$/.test(lastPart);
+            return {
+              id: idx + 1,
+              marca: parts[0] || "—",
+              model: hasYear ? parts.slice(1, -1).join(" ") || parts[0] || "—" : parts.slice(1).join(" ") || info || "—",
+              year: hasYear ? lastPart : "—",
+              status: "Ativo",
+              type: "Sedan",
+            };
+          });
 
           return {
             role: vehicles.length > 1 ? "B2B" : "B2C",
@@ -169,261 +69,6 @@ export default function Veiculos({ userName }) {
       return { role: "B2C", vehicles: [] };
     }
   };
-
-  useEffect(() => {
-    const fetchMarcas = async () => {
-      setLoadingFipe(true);
-      try {
-        const res = await fetch(
-          `https://parallelum.com.br/fipe/api/v1/carros/marcas`,
-        );
-        const data = await res.json();
-
-        const popularBrands = [
-          "Fiat",
-          "Chevrolet",
-          "Volkswagen",
-          "Toyota",
-          "Hyundai",
-          "Honda",
-          "Renault",
-          "Ford",
-          "Nissan",
-          "Jeep",
-        ];
-
-        let mappedData = (Array.isArray(data) ? data : []).map((item) => {
-          let nomeLimpo = item.nome;
-          if (nomeLimpo.toUpperCase() === "GM - CHEVROLET")
-            nomeLimpo = "Chevrolet";
-          if (nomeLimpo.toUpperCase() === "VW - VOLKSWAGEN")
-            nomeLimpo = "Volkswagen";
-          return {
-            nome: nomeLimpo,
-            valor: item.codigo || item.valor,
-          };
-        });
-
-        mappedData.sort((a, b) => {
-          const aIndex = popularBrands.indexOf(a.nome);
-          const bIndex = popularBrands.indexOf(b.nome);
-          if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
-          if (aIndex !== -1) return -1;
-          if (bIndex !== -1) return 1;
-          return a.nome.localeCompare(b.nome);
-        });
-
-        setMarcas(mappedData);
-        setMarcaSelecionada("");
-        setModeloSelecionado("");
-        setAnoSelecionado("");
-        setModelos([]);
-        setAnos([]);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoadingFipe(false);
-      }
-    };
-    fetchMarcas();
-  }, [formTipo]);
-
-  useEffect(() => {
-    const fetchModelos = async () => {
-      if (!marcaSelecionada) {
-        setModelos([]);
-        setModeloSelecionado("");
-        setAnoSelecionado("");
-        setAnos([]);
-        return;
-      }
-      setLoadingFipe(true);
-      try {
-        const marcaObj = marcas.find((m) => m.valor === marcaSelecionada);
-        const nomeDaMarca = marcaObj ? marcaObj.nome : "";
-
-        const whitelistMap = {
-          Volkswagen: [
-            "Gol",
-            "Polo",
-            "Fox",
-            "Up!",
-            "Nivus",
-            "T-Cross",
-            "Taos",
-            "Tiguan",
-            "Amarok",
-            "Jetta",
-            "Virtus",
-            "Voyage",
-            "Saveiro",
-          ],
-          Chevrolet: [
-            "Onix",
-            "Prisma",
-            "Cruze",
-            "Tracker",
-            "S10",
-            "Spin",
-            "Cobalt",
-            "Montana",
-            "Celta",
-            "Corsa",
-            "Vectra",
-            "Astra",
-            "Meriva",
-            "Zafira",
-            "Equinox",
-          ],
-          Fiat: [
-            "Argo",
-            "Mobi",
-            "Cronos",
-            "Pulse",
-            "Fastback",
-            "Toro",
-            "Strada",
-            "Fiorino",
-            "Palio",
-            "Uno",
-            "Siena",
-            "Grand Siena",
-            "Punto",
-            "Idea",
-            "Bravo",
-          ],
-          Ford: [
-            "Ka",
-            "Fiesta",
-            "Focus",
-            "EcoSport",
-            "Ranger",
-            "Fusion",
-            "Mustang",
-            "Territory",
-            "Bronco",
-          ],
-          Toyota: [
-            "Corolla",
-            "Hilux",
-            "Yaris",
-            "Etios",
-            "RAV4",
-            "SW4",
-            "Corolla Cross",
-          ],
-          Honda: [
-            "Civic",
-            "Fit",
-            "HR-V",
-            "City",
-            "CR-V",
-            "WR-V",
-            "Accord",
-            "ZR-V",
-          ],
-          Hyundai: [
-            "HB20",
-            "HB20S",
-            "Creta",
-            "Tucson",
-            "Santa Fe",
-            "Azera",
-            "Elantra",
-            "i30",
-            "IX35",
-          ],
-          Renault: [
-            "Kwid",
-            "Sandero",
-            "Logan",
-            "Duster",
-            "Captur",
-            "Oroch",
-            "Fluence",
-            "Clio",
-          ],
-          Jeep: ["Renegade", "Compass", "Commander", "Wrangler", "Cherokee"],
-          Nissan: ["Kicks", "Versa", "Sentra", "Frontier", "March"],
-        };
-
-        let uniqueModelNames = [];
-
-        if (whitelistMap[nomeDaMarca]) {
-          uniqueModelNames = whitelistMap[nomeDaMarca];
-        } else {
-          const res = await fetch(
-            `https://parallelum.com.br/fipe/api/v1/carros/marcas/${marcaSelecionada}/modelos`,
-          );
-          const data = await res.json();
-          const modelosRaw = Array.isArray(data) ? data : data.modelos || [];
-
-          const getBaseModel = (name) => {
-            const parts = name
-              .replace(/\(novo\)/gi, "")
-              .replace(/\(modelo antigo\)/gi, "")
-              .trim()
-              .split(" ");
-            let base = parts[0];
-            const twoWordBases = [
-              "Grand",
-              "Santa",
-              "Land",
-              "Range",
-              "Aston",
-              "Alfa",
-              "C3",
-              "C4",
-              "Palio",
-              "Space",
-              "Cross",
-              "Eco",
-              "T-Cross",
-            ];
-            if (parts.length > 1 && twoWordBases.includes(base)) {
-              base += " " + parts[1];
-            }
-            return base;
-          };
-
-          uniqueModelNames = Array.from(
-            new Set(modelosRaw.map((m) => getBaseModel(m.nome))),
-          );
-        }
-
-        const mappedModelos = uniqueModelNames
-          .map((name) => ({ nome: name, valor: name }))
-          .sort((a, b) => a.nome.localeCompare(b.nome));
-
-        setModelos(mappedModelos);
-        setModeloSelecionado("");
-        setAnoSelecionado("");
-        setAnos([]);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoadingFipe(false);
-      }
-    };
-    fetchModelos();
-  }, [marcaSelecionada, marcas]);
-
-  useEffect(() => {
-    if (!modeloSelecionado) {
-      setAnos([]);
-      setAnoSelecionado("");
-      return;
-    }
-    setLoadingFipe(true);
-    const currentYear = new Date().getFullYear();
-    const staticYears = [{ nome: "Zero km", valor: "zero" }];
-    for (let y = currentYear; y >= 1990; y--) {
-      staticYears.push({ nome: y.toString(), valor: y.toString() });
-    }
-    setAnos(staticYears);
-    setAnoSelecionado("");
-    setLoadingFipe(false);
-  }, [modeloSelecionado, marcaSelecionada]);
 
   useEffect(() => {
     let isMounted = true;
@@ -496,18 +141,9 @@ export default function Veiculos({ userName }) {
             Meus Veículos
           </h1>
           <p className="text-sm text-gray-500 mt-1">
-            Gerencie a sua frota e acompanhe o status.
+            Acompanhe os veículos cadastrados na sua conta.
           </p>
         </div>
-        {(data.role === "B2B" ||
-          (data.role === "B2C" && data.vehicles.length === 0)) && (
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="flex items-center justify-center gap-2 px-4 py-2 w-full sm:w-auto bg-[#065f46] hover:bg-[#044e3a] text-white rounded-md text-sm font-medium transition-colors shadow-sm"
-          >
-            <Plus className="w-4 h-4" /> Cadastrar Veículo
-          </button>
-        )}
       </div>
 
       {data.role === "B2C" ? (
@@ -542,23 +178,17 @@ export default function Veiculos({ userName }) {
                   </span>
                 </div>
               </div>
-
             </div>
           ))}
 
           {data.vehicles.length === 0 && (
-            <div
-              className="vehicle-item bg-gray-50 border border-dashed border-gray-300 rounded-2xl p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-gray-100 hover:border-gray-400 transition-colors min-h-[250px]"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm mb-4 border border-gray-200 text-gray-400">
-                <Plus className="w-6 h-6" />
-              </div>
+            <div className="vehicle-item bg-gray-50 border border-dashed border-gray-300 rounded-2xl p-6 flex flex-col items-center justify-center text-center min-h-[250px]">
+              <AlertCircle className="w-8 h-8 text-gray-400 mb-4" />
               <h4 className="text-sm font-semibold text-gray-900">
-                Adicionar novo veículo
+                Nenhum veículo encontrado
               </h4>
               <p className="text-xs text-gray-500 mt-1 max-w-[200px]">
-                Cadastre um novo carro para começar a acompanhar seu impacto.
+                Utilize a calculadora para cadastrar seu veículo.
               </p>
             </div>
           )}
@@ -582,7 +212,6 @@ export default function Veiculos({ userName }) {
                   <th className="py-4 px-6 font-medium">Marca</th>
                   <th className="py-4 px-6 font-medium">Ano / Tipo</th>
                   <th className="py-4 px-6 font-medium">Status</th>
-
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
@@ -617,123 +246,10 @@ export default function Veiculos({ userName }) {
                         {v.status}
                       </span>
                     </td>
-
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
-        </div>
-      )}
-
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between p-5 border-b border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-900">
-                Cadastrar Veículo
-              </h3>
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="text-gray-400 hover:text-gray-600 transition-colors p-1"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="p-6 space-y-4">
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-gray-700">
-                  Placa do Veículo
-                </label>
-                <input
-                  type="text"
-                  value={formPlaca}
-                  onChange={(e) => setFormPlaca(e.target.value.toUpperCase())}
-                  placeholder="ABC-1234"
-                  className="w-full bg-[#F9FAFB] border border-gray-200 rounded-lg py-2.5 px-3 text-sm outline-none focus:border-[#065f46] focus:ring-1 focus:ring-[#065f46] focus:bg-white transition-all uppercase"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <SearchableSelect
-                  label="Marca"
-                  placeholder="Selecione a marca..."
-                  items={marcas}
-                  value={marcaSelecionada}
-                  onChange={(val, nome) => {
-                    setMarcaSelecionada(val);
-                    setMarcaNome(nome);
-                  }}
-                  disabled={loadingFipe || marcas.length === 0}
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <SearchableSelect
-                  label="Modelo"
-                  placeholder="Selecione o modelo..."
-                  items={modelos}
-                  value={modeloSelecionado}
-                  onChange={(val, nome) => {
-                    setModeloSelecionado(val);
-                    setModeloNome(nome);
-                  }}
-                  disabled={
-                    loadingFipe || modelos.length === 0 || !marcaSelecionada
-                  }
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <SearchableSelect
-                    label="Ano"
-                    placeholder="Selecione o ano..."
-                    items={anos}
-                    value={anoSelecionado}
-                    onChange={(val, nome) => {
-                      setAnoSelecionado(val);
-                      setAnoNome(nome);
-                    }}
-                    disabled={
-                      loadingFipe || anos.length === 0 || !modeloSelecionado
-                    }
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-gray-700">
-                    Tipo
-                  </label>
-                  <select
-                    value={formTipo}
-                    onChange={(e) => setFormTipo(e.target.value)}
-                    className="w-full bg-[#F9FAFB] border border-gray-200 rounded-lg py-2.5 px-3 text-sm outline-none focus:border-[#065f46] focus:ring-1 focus:ring-[#065f46] focus:bg-white transition-all"
-                  >
-                    <option>Hatch</option>
-                    <option>Sedan</option>
-                    <option>SUV</option>
-                    <option>Picape</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-5 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-200 rounded-lg transition-colors"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={handleSaveVehicle}
-                disabled={isSubmitting || !formPlaca || !modeloNome || !anoNome}
-                className="px-4 py-2 bg-[#065f46] hover:bg-[#044e3a] text-white rounded-lg text-sm font-medium transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? "Salvando..." : "Salvar Veículo"}
-              </button>
-            </div>
           </div>
         </div>
       )}

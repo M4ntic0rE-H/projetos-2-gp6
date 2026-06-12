@@ -162,19 +162,17 @@ export default function ModalExportar({ isOpen, onClose, data, userName }) {
                 <table className="w-full text-left text-sm">
                   <thead>
                     <tr className="border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase">
-                      <th className="pb-2 font-medium">ID</th>
-                      <th className="pb-2 font-medium">Praça</th>
-                      <th className="pb-2 font-medium">Status</th>
-
+                      <th className="pb-2 font-medium">Marca</th>
+                      <th className="pb-2 font-medium">Modelo</th>
+                      <th className="pb-2 font-medium">Ano</th>
                     </tr>
                   </thead>
                   <tbody>
                     {data.history.slice(0, 5).map((row, idx) => (
                       <tr key={idx} className="border-b border-gray-100 text-gray-700">
-                        <td className="py-2.5">{row.id}</td>
-                        <td className="py-2.5">{row.praca}</td>
-                        <td className="py-2.5">{row.status === "Success" ? "Sucesso" : row.status === "Pending" ? "Pendente" : "Reembolsado"}</td>
-
+                        <td className="py-2.5">{row.marca}</td>
+                        <td className="py-2.5">{row.modelo}</td>
+                        <td className="py-2.5">{row.ano}</td>
                       </tr>
                     ))}
                   </tbody>
