@@ -1,0 +1,430 @@
+/* ============================================
+   InfoScreen — Professional Redesign
+   ============================================ */
+
+/* Container */
+.info-container {
+  position: relative;
+  min-height: 100vh;
+  padding: 0 24px 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* ---- Decorative Background ---- */
+.bg-decoration {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.35;
+}
+
+.bg-circle-1 {
+  width: 600px;
+  height: 600px;
+  background: var(--primary-200);
+  top: -200px;
+  right: -150px;
+}
+
+.bg-circle-2 {
+  width: 500px;
+  height: 500px;
+  background: var(--primary-100);
+  bottom: -100px;
+  left: -200px;
+}
+
+/* ---- Header ---- */
+.info-header {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 960px;
+  padding-top: 56px;
+  margin-bottom: 48px;
+  animation: fadeSlideDown 0.6s var(--transition-slow) both;
+}
+
+.logo-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  color: var(--primary-600);
+  margin-bottom: 28px;
+  padding: 8px 16px 8px 12px;
+  background: var(--primary-50);
+  border: 1px solid var(--primary-200);
+  border-radius: 100px;
+}
+
+.logo-brand svg {
+  flex-shrink: 0;
+}
+
+.info-header h1 {
+  font-size: 2.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--neutral-900);
+  margin: 0 0 12px 0;
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ---- Content Area ---- */
+.info-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 960px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* ---- Cards ---- */
+.card {
+  position: relative;
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--card-shadow);
+  transition:
+    box-shadow var(--transition-base),
+    transform var(--transition-base);
+  animation: fadeSlideUp 0.5s var(--transition-slow) both;
+}
+
+.card:hover {
+  box-shadow: var(--card-shadow-hover);
+}
+
+.card-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: linear-gradient(90deg, var(--primary-500), var(--primary-400));
+}
+
+/* Main card — delayed animation */
+.main-card {
+  animation-delay: 0.1s;
+}
+
+.card h2 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--neutral-800);
+  margin: 0 0 14px 0;
+  letter-spacing: -0.01em;
+}
+
+.card p {
+  font-size: 0.975rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ---- Advantages Section ---- */
+.advantages-section {
+  animation: fadeSlideUp 0.5s var(--transition-slow) both;
+  animation-delay: 0.2s;
+}
+
+.advantages-section > h2 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--neutral-800);
+  margin: 0 0 20px 0;
+  letter-spacing: -0.01em;
+}
+
+.advantages-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.advantage-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--card-shadow);
+  transition:
+    box-shadow var(--transition-base),
+    transform var(--transition-base),
+    border-color var(--transition-base);
+  cursor: default;
+}
+
+.advantage-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--card-shadow-hover);
+  border-color: var(--primary-200);
+}
+
+/* Icon wrapper */
+.icon-wrapper {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
+  color: var(--primary-600);
+  margin-bottom: 18px;
+  transition: background var(--transition-base);
+}
+
+.advantage-card:hover .icon-wrapper {
+  background: linear-gradient(135deg, var(--primary-100), var(--primary-200));
+}
+
+.advantage-card h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--neutral-800);
+  margin: 0 0 10px 0;
+  letter-spacing: -0.01em;
+}
+
+.advantage-card p {
+  font-size: 0.925rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ---- Bottom Grid ---- */
+.bottom-grid {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr;
+  gap: 20px;
+}
+
+/* Calculator card */
+.calculator-card {
+  animation-delay: 0.3s;
+}
+
+.objective-box {
+  margin-top: 20px;
+  padding: 20px;
+  background: var(--primary-50);
+  border: 1px solid var(--primary-200);
+  border-radius: var(--radius-md);
+}
+
+.objective-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary-700);
+  margin-bottom: 10px;
+  font-size: 0.925rem;
+}
+
+.objective-label svg {
+  flex-shrink: 0;
+}
+
+.objective-label strong {
+  font-weight: 600;
+}
+
+.objective-box p {
+  font-size: 0.925rem;
+  line-height: 1.65;
+  color: var(--primary-800);
+  margin: 0;
+}
+
+/* Sources card */
+.sources-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: var(--neutral-50);
+  border: 1px dashed var(--neutral-300);
+  box-shadow: none;
+  animation-delay: 0.35s;
+}
+
+.sources-card h2 {
+  margin-bottom: 20px;
+}
+
+.status-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 2.5px solid var(--neutral-200);
+  border-top-color: var(--primary-500);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+.status-badge {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
+}
+
+/* ---- Footer ---- */
+.info-footer {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 960px;
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-light);
+  text-align: center;
+}
+
+.info-footer p {
+  font-size: 0.825rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+  .info-container {
+    padding: 0 16px 48px;
+  }
+
+  .info-header {
+    padding-top: 36px;
+    margin-bottom: 32px;
+  }
+
+  .info-header h1 {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .advantages-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .bottom-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .card {
+    padding: 24px;
+  }
+
+  .advantage-card {
+    padding: 22px;
+  }
+
+  .bg-circle-1 {
+    width: 350px;
+    height: 350px;
+    top: -120px;
+    right: -100px;
+  }
+
+  .bg-circle-2 {
+    width: 300px;
+    height: 300px;
+    bottom: -60px;
+    left: -120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .info-header h1 {
+    font-size: 1.65rem;
+  }
+
+  .logo-brand {
+    font-size: 0.85rem;
+    padding: 6px 12px 6px 10px;
+  }
+
+  .card h2,
+  .advantages-section > h2 {
+    font-size: 1.15rem;
+  }
+}
